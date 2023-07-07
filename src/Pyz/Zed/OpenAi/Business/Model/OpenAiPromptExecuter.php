@@ -36,22 +36,20 @@ class OpenAiPromptExecuter
             $preparedPrompt = str_replace('%' . $promptKey . '%', $promptParameter, $preparedPrompt);
         }
 
-        return $this->openAiClient->completionsCreate(
+        return $this->openAiClient->chatCreate(
             [
                 'model' => $prompt->getModel(),
-                'prompt' => $preparedPrompt,
-                'suffix' => $prompt->getSuffix(),
+                'messages' => [
+                    ['role' => 'user', 'content' => $preparedPrompt],
+                ],
                 'max_tokens' => $prompt->getMaxTokens(),
                 'temperature' => $prompt->getTemperature(),
                 'top_p' => $prompt->getTopP(),
                 'n' => $prompt->getNCompletions(),
                 'stream' => $prompt->getStream(),
-                'logprobs' => $prompt->getLogprobs(),
-                'echo' => $prompt->getEcho(),
                 'stop' => $prompt->getStop(),
-                'presence_penalty' => $prompt->getPresencePenalty(),
-                'frequency_penalty' => $prompt->getFrequencyPenalty(),
-                'best_of' => $prompt->getBestOf(),
+                'presence_penalty' => $prompt->getPresencePenalty() ?? 0,
+                'frequency_penalty' => $prompt->getFrequencyPenalty() ?? 0,
                 'user' => $prompt->getUser(),
             ],
         );

@@ -27,6 +27,8 @@ image:
         }'
         SPRYKER_PRODUCT_CONFIGURATOR_HOST: date-time-configurator-example.spryker.local
         SPRYKER_PRODUCT_CONFIGURATOR_PORT: 80
+        OPENAI_API_KEY: sk-Y8r2PfOMmMEHHp0PGLxxxx
+        SPRYKER_XDEBUG_HOST_IP: 172.17.0.1
     node:
         version: 16
         npm: 8

@@ -117,7 +117,7 @@ $(document).ready(function () {
             modalJQuery.modal("show");
             loading("Executing Prompt...");
             executePrompt(eventName, context, function(data) {
-                selectBox.innerHTML = data.choices.map(completionChoice => '<option title="'+escapeHtml(completionChoice.text)+'" value="'+escapeHtml(completionChoice.text)+'">'+completionChoice.text.substring(0,70)+'</option>').join('');
+                selectBox.innerHTML = data.choices.map(completionChoice => '<option title="'+escapeHtml(completionChoice.message.content)+'" value="'+escapeHtml(completionChoice.message.content)+'">'+completionChoice.message.content.substring(0,70)+'</option>').join('');
                 loaded();
                 modalJQuery.find(".modal-footer button").unbind("click");
                 modalJQuery.find(".modal-footer button").on("click", function(event) {
