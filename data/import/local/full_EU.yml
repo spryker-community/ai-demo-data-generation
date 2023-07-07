@@ -191,3 +191,6 @@ actions:
 #6. Miscellaneous Setup import
   - data_entity: mime-type
     source: data/import/common/common/mime_type.csv
+
+  - data_entity: open-ai
+    source: data/import/common/common/openai.csv
