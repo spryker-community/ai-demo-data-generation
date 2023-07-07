@@ -39,6 +39,7 @@ use Pyz\Zed\DataImport\Business\Model\Country\Repository\CountryRepository;
 use Pyz\Zed\DataImport\Business\Model\Country\Repository\CountryRepositoryInterface;
 use Pyz\Zed\DataImport\Business\Model\Currency\CurrencyWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Customer\CustomerWriterStep;
+use Pyz\Zed\DataImport\Business\Model\Customer\OpenAiWriterStep;
 use Pyz\Zed\DataImport\Business\Model\DataImporterConditional;
 use Pyz\Zed\DataImport\Business\Model\DataImporterDataSetWriterAwareConditional;
 use Pyz\Zed\DataImport\Business\Model\DataSet\DataSetConditionInterface;
@@ -219,6 +220,8 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
                 return $this->createNavigationImporter($dataImportConfigurationActionTransfer);
             case DataImportConfig::IMPORT_TYPE_NAVIGATION_NODE:
                 return $this->createNavigationNodeImporter($dataImportConfigurationActionTransfer);
+            case DataImportConfig::IMPORT_TYPE_OPEN_AI:
+                return $this->createOpenAiImporter($dataImportConfigurationActionTransfer);
             default:
                 return null;
         }
@@ -1843,5 +1846,24 @@ class DataImportBusinessFactory extends SprykerDataImportBusinessFactory
     protected function createCombinedProductGroupMandatoryColumnCondition(): DataSetConditionInterface
     {
         return new CombinedProductGroupMandatoryColumnCondition();
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer
+     *
+     * @return \Spryker\Zed\DataImport\Business\Model\DataImporterInterface|\Spryker\Zed\DataImport\Business\Model\DataSet\DataSetStepBrokerAwareInterface
+     */
+    protected function createOpenAiImporter(DataImportConfigurationActionTransfer $dataImportConfigurationActionTransfer)
+    {
+        $dataImporter = $this->getCsvDataImporterFromConfig(
+            $this->getConfig()->buildImporterConfigurationByDataImportConfigAction($dataImportConfigurationActionTransfer),
+        );
+
+        $dataSetStepBroker = $this->createTransactionAwareDataSetStepBroker();
+        $dataSetStepBroker->addStep(new OpenAiWriterStep());
+
+        $dataImporter->addDataSetStepBroker($dataSetStepBroker);
+
+        return $dataImporter;
     }
 }

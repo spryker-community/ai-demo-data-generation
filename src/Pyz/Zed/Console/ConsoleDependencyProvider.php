@@ -343,6 +343,8 @@ class ConsoleDependencyProvider extends SprykerConsoleDependencyProvider
             new MessageBrokerWorkerConsole(),
 
             new DateTimeProductConfiguratorBuildFrontendConsole(),
+
+            new DataImportConsole(DataImportConsole::DEFAULT_NAME . ':' . DataImportConfig::IMPORT_TYPE_OPEN_AI),
         ];
 
         $propelCommands = $container->getLocator()->propel()->facade()->getConsoleCommands();

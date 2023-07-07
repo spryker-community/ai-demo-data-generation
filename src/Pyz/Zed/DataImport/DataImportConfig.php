@@ -206,6 +206,11 @@ class DataImportConfig extends SprykerDataImportConfig
     public const IMPORT_TYPE_COMBINED_PRODUCT_GROUP = 'combined-product-group';
 
     /**
+     * @var string
+     */
+    public const IMPORT_TYPE_OPEN_AI = 'open-ai';
+
+    /**
      * @return string|null
      */
     public function getDefaultYamlConfigPath(): ?string
