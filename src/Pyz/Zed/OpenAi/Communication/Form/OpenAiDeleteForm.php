@@ -10,7 +10,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 /**
  * @method \Pyz\Zed\OpenAi\Business\OpenAiFacadeInterface getFacade()
- * @method \Pyz\Zed\OpenAi\Persistence\OpenAiRepositoryInterface getRepository()
  * @method \Pyz\Zed\OpenAi\Communication\OpenAiCommunicationFactory getFactory()
  */
 class OpenAiDeleteForm extends AbstractType
