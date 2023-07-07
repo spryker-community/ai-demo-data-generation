@@ -1,0 +1,34 @@
+{# @deprecated Use view 'product-detail-color-selectoer' instead. #}
+{% extends template('widget') %}
+
+{% define data = {
+    idProductAbstract: _widget.idProductAbstract | default,
+    items: _widget.productGroupItems | default([])
+} %}
+
+{% block body %}
+
+    {% if data.items is not empty %}
+        {% embed molecule('toggler-item') with {
+            modifiers: ['with-top-border', 'option'],
+            data: {
+                title: 'product.attribute.color' | trans,
+                isToggler: false,
+            },
+            embed: {
+                idProductAbstract: data.idProductAbstract,
+                items: data.items,
+            }
+        } only %}
+            {% block contentText %}
+                {% include molecule('color-selector-pdp', 'ProductGroupWidget') with {
+                    data: {
+                        items: embed.items,
+                    },
+                } only %}
+            {% endblock %}
+        {% endembed %}
+
+    {% endif %}
+
+{% endblock %}

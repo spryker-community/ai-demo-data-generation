@@ -1,0 +1,48 @@
+{% extends template('page-layout-checkout', '@SprykerShop:CheckoutPage') %}
+
+{% block header %}
+    {% embed organism('header') with {
+        modifiers: ['checkout'],
+        data: {
+            showSearchForm: false,
+            showNavigation: false,
+            showLangCurrencySwitches: false,
+        },
+    } only %}
+        {% block additionalLink %}
+            <a class="{{ config.name }}__back-link" href="{{ url('cart') }}">
+                {% include atom('icon') with {
+                    modifiers: ['medium-up', 'to-cart'],
+                    data: {
+                        name: 'arrow-left',
+                    },
+                } only %}
+                {{ 'cart.cart' | trans }}
+            </a>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block container %}
+    <div class="container">
+        <div class="container__inner">
+            {% block pageInfo %}
+                {% block breadcrumbs %}
+                    {{ parent() }}
+                {% endblock %}
+            {% endblock %}
+
+            <main class="page-layout-checkout {% block contentClass %}{% endblock %}">
+                {% block title %}{% endblock %}
+
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {% embed organism('footer') only %}
+        {% block footerTop %}{% endblock %}
+    {% endembed %}
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends view('content-product-set', '@SprykerShop:ContentProductSetWidget') %}
+
+{% block body %}
+    {% embed organism('product-set-cms-content', 'ProductSetWidget') ignore missing with {
+        data: {
+            products: data.products,
+            name: data.name,
+            description: data.description,
+            images: data.images,
+        },
+    } only %}
+        {% block header %}
+            {% block title %}
+                {{ parent() }}
+            {% endblock %}
+
+            <div class="grid grid--middle grid--justify spacing-bottom spacing-bottom--bigger">
+                {% block description %}
+                    {% if data.description %}
+                        <div class="col">
+                            <p>{{ data.description }}</p>
+                        </div>
+                    {% endif %}
+                {% endblock %}
+
+                <div class="col">
+                    {% set generalAddToCartButtonClass = '' %}
+
+                    {{ block('generalAddToCart') }}
+                </div>
+            </div>
+        {% endblock %}
+
+        {% block productSet %}
+            <form method="GET">
+                {% include molecule('product-set-slider', 'ProductSetWidget') with {
+                    data: {
+                        products: data.products,
+                        sliderConfig: data.sliderConfig,
+                    },
+                } only %}
+            </form>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

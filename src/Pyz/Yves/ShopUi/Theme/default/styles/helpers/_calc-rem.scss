@@ -1,0 +1,11 @@
+@use 'sass:math';
+
+@function rem($value: $setting-font-size-base, $type: string) {
+    $remSize: math.div($value, math.div($setting-font-size-base, 1px));
+
+    @if ($type == number) {
+        @return $remSize * 1rem;
+    }
+
+    @return #{$remSize}rem;
+}

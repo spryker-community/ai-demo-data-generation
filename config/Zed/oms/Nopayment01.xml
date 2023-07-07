@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<statemachine
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="Nopayment01" main="true">
+        <subprocesses>
+            <process>DummyRefund</process>
+            <process>DummyReturn</process>
+        </subprocesses>
+
+        <states>
+            <state name="new" display="oms.state.new"/>
+            <state name="paid" reserved="true" display="oms.state.paid"/>
+            <state name="exported" reserved="true" display="oms.state.in-progress"/>
+            <state name="waiting for conformation" reserved="true" display="oms.state.in-progress"/>
+            <state name="shipped" reserved="true" display="oms.state.shipped"/>
+            <state name="delivered" display="oms.state.delivered"/>
+            <state name="closed" display="oms.state.closed"/>
+        </states>
+
+        <transitions>
+            <transition happy="true">
+                <source>new</source>
+                <target>paid</target>
+                <event>authorize</event>
+            </transition>
+
+            <transition happy="true">
+                <source>paid</source>
+                <target>exported</target>
+                <event>export</event>
+            </transition>
+
+            <transition happy="true">
+                <source>exported</source>
+                <target>waiting for conformation</target>
+                <event>confirmation</event>
+            </transition>
+
+            <transition happy="true">
+                <source>waiting for conformation</source>
+                <target>shipped</target>
+                <event>ship</event>
+            </transition>
+
+            <transition happy="true">
+                <source>shipped</source>
+                <target>delivered</target>
+                <event>stock-update</event>
+            </transition>
+
+            <transition happy="true">
+                <source>delivered</source>
+                <target>closed</target>
+                <event>close</event>
+            </transition>
+
+        </transitions>
+
+        <events>
+            <event name="authorize" timeout="1 second"/>
+            <event name="export" onEnter="true" manual="true" command="Oms/SendOrderConfirmation"/>
+            <event name="ship" manual="true" command="Oms/SendOrderShipped"/>
+            <event name="stock-update" manual="true"/>
+            <event name="close" manual="true" timeout="1 hour"/>
+            <event name="confirmation" manual="true" timeout="1 minute"/>
+        </events>
+    </process>
+
+    <process name="DummyRefund" file="DummySubprocess/DummyRefund01.xml"/>
+    <process name="DummyReturn" file="DummySubprocess/DummyReturn01.xml"/>
+
+</statemachine>

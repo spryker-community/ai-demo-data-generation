@@ -1,0 +1,10 @@
+{% extends template('navigation-footer', '@SprykerShop:NavigationWidget') %}
+
+{% block body %}
+    {% include molecule('navigation-list') with {
+        modifiers: ['footer'],
+        data: {
+            nodes: data.nodes,
+        },
+    } only %}
+{% endblock %}

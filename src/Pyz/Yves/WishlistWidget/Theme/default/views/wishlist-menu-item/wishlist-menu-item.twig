@@ -1,0 +1,20 @@
+{% extends template('widget') %}
+
+{% define data = {
+    wishlistCollection: _widget.wishlistCollection,
+    isActivePage: _widget.isActivePage,
+    activeWishlistId: _widget.activeWishlistId,
+    modifiers: []
+} %}
+
+{% block body %}
+    {% include molecule('wishlist-menu-item', 'WishlistWidget') with {
+        modifiers: data.modifiers,
+        data: {
+            wishlistCollection: data.wishlistCollection,
+            isActivePage: data.isActivePage,
+            activeWishlistId: data.activeWishlistId
+        }
+    } only %}
+{% endblock %}
+

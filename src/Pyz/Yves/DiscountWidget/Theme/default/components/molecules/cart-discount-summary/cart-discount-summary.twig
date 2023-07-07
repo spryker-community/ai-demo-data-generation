@@ -1,0 +1,64 @@
+{% extends molecule('cart-discount-summary', '@SprykerShop:DiscountWidget') %}
+
+{% define config = {
+    tag: 'li',
+} %}
+
+{% block body %}
+    {% if data.voucherDiscounts is not empty %}
+        <strong>
+            {{ 'cart.vouchers' | trans }}
+
+            {% if data.isQuoteEditable %}
+                {% include molecule('single-button-form') with {
+                    class: 'float-right text-small',
+                    data: {
+                        formAction: url('cart-code/code/clear'),
+                        buttonText: 'cart.vouchers.clear-all' | trans,
+                        iconName: '',
+                        buttonClass: 'link link--darkest link--edit',
+                        fieldName: 'cart_code_clear_form[_token]',
+                        fieldValue: csrf_token('cart_code_clear_form'),
+                    },
+                } only %}
+            {% endif %}
+        </strong>
+        <ul>
+            {% for voucherDiscount in data.voucherDiscounts %}
+                <li class="grid grid--justify spacing-y">
+                    <span class="col col--sm-8">
+                        {{ voucherDiscount.displayName }}
+                        {% if data.isQuoteEditable %}
+                            <br/>
+                            {% include molecule('single-button-form') with {
+                                data: {
+                                    formAction: url('cart-code/code/remove', {'code': voucherDiscount.voucherCode}),
+                                    buttonText: 'cart.voucher.remove' | trans,
+                                    iconName: '',
+                                    fieldName: 'cart_code_remove_form[_token]',
+                                    buttonClass: 'link link--darkest link--edit',
+                                    fieldValue: csrf_token('cart_code_remove_form'),
+                                },
+                            } only %}
+                        {% endif %}
+                    </span>
+                    <span class="col col--expand text-right">- {{ voucherDiscount.amount | money }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+        <hr />
+    {% endif %}
+
+    {% if data.ruleDiscounts is not empty %}
+        <strong>{{ 'cart.discounts' | trans }}</strong>
+        <ul>
+            {% for ruleDiscount in data.ruleDiscounts %}
+                <li class="grid grid--justify spacing-y">
+                    <span class="col col--sm-8">{{ ruleDiscount.displayName }}</span>
+                    <span class="col col--expand text-right">- {{ ruleDiscount.amount | money }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+        <hr />
+    {% endif %}
+{% endblock %}

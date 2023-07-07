@@ -1,0 +1,13 @@
+build:
+    environment:
+        php: '8.0.19'
+
+    tests:
+        override:
+            - true # disable test execution on scrutinizer
+
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run

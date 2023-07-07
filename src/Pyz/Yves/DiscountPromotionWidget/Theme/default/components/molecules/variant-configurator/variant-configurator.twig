@@ -1,0 +1,40 @@
+{% extends molecule('variant-configurator', '@SprykerShop:DiscountPromotionWidget') %}
+
+{% block body %}
+    {% if not data.useExternalForm %}
+        <form method="GET">
+    {% endif %}
+
+    <ul>
+        {% for name, values in data.superAttributes %}
+            {% set selectedValue = data.selectedAttributes[name] | default %}
+            {% set selectedValue = selectedValue in values ? selectedValue : null %}
+            {% set isAvailable = true %}
+
+            {% if name in data.availableAttributes | keys %}
+                {% set values = data.availableAttributes[name] %}
+            {% else %}
+                {% set isAvailable = selectedValue is empty %}
+            {% endif %}
+
+            {% block variant %}
+                <li>
+                    {% include molecule('variant', 'DiscountPromotionWidget') with {
+                        data: {
+                            name: name,
+                            formName: 'attributes[' ~ data.sku ~ '][' ~ name ~ ']',
+                            values: values,
+                            selectedValue: selectedValue,
+                            label: ('product.attribute.' ~ name) | trans,
+                            isAvailable: isAvailable
+                        }
+                    } only %}
+                </li>
+            {% endblock %}
+        {% endfor %}
+    </ul>
+
+    {% if not data.useExternalForm %}
+        </form>
+    {% endif %}
+{% endblock %}

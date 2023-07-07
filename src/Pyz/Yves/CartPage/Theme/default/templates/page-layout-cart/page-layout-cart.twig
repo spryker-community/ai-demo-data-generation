@@ -1,0 +1,23 @@
+{% extends template('page-layout-main') %}
+
+{% define data = {
+    breadcrumbs: _view.stepBreadcrumbs.breadcrumbs | default([])
+} %}
+
+{% block headScripts %}
+    {{ parent() }}
+
+    {% widget 'AssetWidget' args ['cart-header'] only %}
+    {% endwidget %}
+{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block contentClass %}page-layout-cart{% endblock %}
+
+{% block footerScripts %}
+    {% widget 'AssetWidget' args ['cart-footer'] only %}
+    {% endwidget %}
+
+    {{ parent() }}
+{% endblock %}

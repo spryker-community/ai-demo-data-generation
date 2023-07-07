@@ -1,0 +1,28 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'product-image',
+} %}
+
+{% define data = {
+    name: '',
+    image: '',
+} %}
+
+{% block body %}
+    {% set imageUrl = data.image %}
+
+    {% if imageUrl %}
+        {% include molecule('lazy-image') with {
+            modifiers: ['thumbnail', 'small'] | merge(modifiers),
+            data: {
+                imageSrc: imageUrl,
+                imageTitle: data.name,
+            },
+        } only %}
+    {% else %}
+        <div class="text-center">
+            <small>{{ 'global.no_image_available' | trans }}</small>
+        </div>
+    {% endif %}
+{% endblock %}

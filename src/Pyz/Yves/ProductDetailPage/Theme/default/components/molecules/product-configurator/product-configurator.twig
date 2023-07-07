@@ -1,0 +1,109 @@
+{% extends molecule('product-configurator', '@SprykerShop:ProductDetailPage') %}
+
+{% set productName = data.product.name | default %}
+{% set isProductConcrete = data.product.idProductConcrete is not empty %}
+
+{% block body %}
+    <h1 itemprop="name" class="title title--product title--h2">{{ productName }}</h1>
+    <link itemprop="url" href="{{ data.product.url }}">
+
+    <div class="grid grid--justify spacing-bottom spacing-bottom--bigger">
+        {% widget 'ProductDetailPageReviewWidget' args [data.product.idProductAbstract] use view('pdp-review-rating', 'ProductReviewWidget') only %}{% endwidget %}
+
+        {% widget 'CurrentProductPriceVolumeWidget' args [data.product.currentProductPrice] only %}
+        {% elsewidget 'ProductPriceVolumeWidget' args [data.product] only %} {# @deprecated Use CurrentProductPriceVolumeWidget instead. #}
+        {% nowidget %}
+            <div class="col text-right">
+                {% include molecule('money-price') with {
+                    modifiers: ['pdp'],
+                    data: {
+                        amount: data.product.price,
+                        originalAmount: data.product.prices.ORIGINAL is not defined ? null : data.product.prices.ORIGINAL
+                    }
+                } only %}
+            </div>
+        {% endwidget %}
+    </div>
+
+    {{ block('bundleProducts') }}
+    {{ block('colors') }}
+
+    {% include molecule('variant-configurator', 'ProductDetailPage') with {
+        data: {
+            superAttributes: data.product.attributeMap.superAttributes,
+            selectedAttributes: data.product.selectedAttributes,
+            availableAttributes: data.product.availableAttributes
+        }
+    } only %}
+
+    {% widget 'ProductConfigurationProductViewDisplayWidget' args [data.product] only %}{% endwidget %}
+
+    {% widget 'ProductConfigurationProductDetailPageButtonWidget' args [data.product] only %}{% endwidget %}
+
+    <hr>
+
+    {% widget 'AddToCartFormWidget' args [config, data.product, isDisabled, options] only %}
+        {% block embeddedData %}
+            {% widget 'ProductOptionConfiguratorWidget' args [data.product] only %}{% endwidget %}
+
+            {% if not data.isDisabled and can('SeeAddToCartPermissionPlugin') %}
+                {% embed molecule('toggler-item') with {
+                    modifiers: ['with-top-border', 'option'],
+                    data: {
+                        title: 'cart.item_quantity' | trans,
+                        isToggler: false,
+                    },
+                } only %}
+                    {% block contentText %}
+                        {% set numberFormatConfig = {} %}
+                        {% for key, value in getNumberFormatConfig(app.locale).toArray() %}
+                            {% set numberFormatConfig = numberFormatConfig | merge({ (key | replace({'_symbol': '', '_': '-'})): value }) %}
+                        {% endfor %}
+
+                        {% include molecule('quantity-counter') with {
+                            modifiers: ['quantity-large', 'no-spacing'],
+                            data: {
+                                readOnly: true,
+                                numberFormatConfig: numberFormatConfig,
+                            },
+                        } only %}
+                    {% endblock %}
+                {% endembed %}
+            {% else %}
+                <input type="hidden" class="js-volume-price__quantity">
+            {% endif %}
+
+            {% include molecule('availability-product', 'AvailabilityWidget') ignore missing with {
+                data: {
+                    idProductConcrete: data.product.idProductConcrete,
+                    isAvailable: data.product.available,
+                },
+            } only %}
+
+            {% widget 'ProductDiscontinuedNoteWidget' args [data.product.sku] only %}{% endwidget %}
+
+            {% if can('SeeAddToCartPermissionPlugin') %}
+                <div class="{{ data.config.name }}__button-wrap">
+                    <button class="button button--large button--expand" {{ data.isDisabled ? 'disabled' }} {{ qa('add-to-cart-button') }} data-init-single-click>
+                        {{ 'page.detail.add-to-cart' | trans }}
+                    </button>
+                </div>
+            {% endif %}
+
+            {% widget 'CartAddProductAsSeparateItemWidget' only %}{% endwidget %}
+        {% endblock %}
+    {% endwidget %}
+
+    {% if not isAvailable and isProductConcrete %}
+        {% widget 'AvailabilityNotificationSubscriptionWidget' args [data.product] only %}{% endwidget %}
+    {% endif %}
+
+    {% if can('SeeWishlistPermissionPlugin') and isProductAvailable %}
+        {% include molecule('wishlist-selector-for-pdp', 'WishlistWidget') ignore missing with {
+            data: {
+                sku: data.product.sku,
+                idProductConcrete: data.product.idProductConcrete | default
+            }
+        } only %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends molecule('suggestion-product', '@SprykerShop:CatalogPage') %}
+
+{% block body %}
+    <a class="container grid grid--middle link link--without-underline link--darkest js-suggest-search__item--navigable js-suggest-search__product-item--navigable" href="{{ data.url }}">
+        <span class="col">
+            {% if data.image %}
+                {% set imageClasses = '' %}
+
+                {% block image %}
+                    {% set imageClasses = '' %}
+                    {% set imageModifiers = ['thumbnail', 'with-overlay', 'catalog'] %}
+
+                    {{ parent() }}
+                {% endblock %}
+            {% endif %}
+       </span>
+
+        <span class="col col--lg-9 title title--medium">
+            {{- data.title -}}
+            {% if can('SeePricePermissionPlugin') %}
+                {% include molecule('money-price') with {
+                    modifiers: ['suggestion-product'],
+                    data: {
+                        amount: data.price,
+                        originalAmount: data.originalPrice ?? null,
+                    },
+                } only %}
+            {% else %}
+                {{ 'customer.access.cannot_see_price' | trans }}
+            {% endif %}
+       </span>
+    </a>
+{% endblock %}

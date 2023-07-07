@@ -1,0 +1,309 @@
+@mixin shop-ui-navigation-multilevel-node($name: '.navigation-multilevel-node') {
+    $image-url: '../images';
+    $image-class: image;
+
+    #{$name} {
+        align-self: flex-end;
+        margin: 0 rem(9);
+        text-transform: uppercase;
+        font: fw(medium) rem(13) $setting-font-family-additional;
+        letter-spacing: rem(2);
+        white-space: nowrap;
+        cursor: default;
+
+        &:hover {
+            color: $setting-color-alpha-3;
+            text-decoration: none;
+        }
+
+        &__menu {
+            box-shadow: 0 rem(100) rem(100) 0 $setting-color-alpha-1;
+
+            &--side-drawer {
+                box-shadow: none;
+            }
+
+            &--hidden {
+                display: none;
+            }
+        }
+
+        #{$name}__menu--flyout,
+        #{$name}__menu--brand {
+            margin: 0;
+            left: -1rem;
+            right: -1rem;
+            background-color: $setting-color-white;
+        }
+
+        &__link {
+            text-transform: uppercase;
+            font: fw(medium) rem(13) $setting-font-family-additional;
+            letter-spacing: rem(2);
+            white-space: nowrap;
+            cursor: pointer;
+
+            &:hover {
+                color: $setting-color-alpha-3;
+                text-decoration: none;
+            }
+
+            &--lvl-2 {
+                text-transform: capitalize;
+                color: $setting-color-text;
+                font: fw(regular) rem(16) / rem(24) $setting-font-family;
+                letter-spacing: normal;
+
+                &:hover {
+                    text-decoration: underline;
+                    color: map-get($setting-color-actions, alert);
+                }
+            }
+
+            &--side-drawer {
+                &#{$name}__link--lvl-1 {
+                    display: inline-block;
+                    padding: rem(16) 0;
+                }
+
+                &#{$name}__link--lvl-2 {
+                    display: inline-block;
+                    padding: 0 0 rem(12);
+                    font-size: rem(15);
+                }
+            }
+
+            &--mobile {
+                font-weight: fw(regular);
+
+                &:hover {
+                    color: $setting-color-black;
+                }
+            }
+        }
+
+        &__flyout-fullscreen-container {
+            @include helper-breakpoint-media-min($lg-min) {
+                position: relative;
+                padding: rem(40) rem(16) rem(20);
+                box-shadow: none;
+                max-width: rem(745);
+                width: 100%;
+                margin: 0 auto;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    display: block;
+                    width: rem(1);
+                    border-left: rem(1) dotted $setting-color-gray-3;
+                    top: rem(40);
+                    bottom: rem(25);
+                    left: 34%;
+                }
+            }
+
+            @include helper-breakpoint-media-min($xl-min) {
+                max-width: rem(870);
+            }
+        }
+
+        &__flyout-fullscreen-list {
+            @include helper-breakpoint-media-min($lg-min) {
+                padding-right: rem(20);
+                max-width: 35%;
+                width: 100%;
+                white-space: normal;
+            }
+        }
+
+        &__flyout-fullscreen-list-node-image {
+            &::after {
+                display: none;
+            }
+
+            @include helper-breakpoint-media-min($lg-min) {
+                max-width: 65%;
+                width: 100%;
+            }
+        }
+
+        &__brand-dropdown-container {
+            width: 100%;
+
+            @include helper-breakpoint-media-min($xl-min) {
+                max-width: rem(930);
+                margin: 0 auto;
+            }
+
+            @include helper-breakpoint-media-min($xxl-min) {
+                max-width: rem(1210);
+            }
+        }
+
+        &__brand-dropdown-list {
+            &::after {
+                display: none;
+            }
+
+            @include helper-breakpoint-media-min($lg-min) {
+                padding: rem(40) rem(16) rem(20);
+            }
+        }
+
+        &__child {
+            margin: rem(8) 0;
+
+            &:hover {
+                text-decoration: none;
+                color: $setting-color-text;
+                cursor: default;
+            }
+
+            #{$name}__link {
+                &--flyout {
+                    font-size: rem(16);
+                    color: $setting-color-black;
+                    letter-spacing: rem(0.2);
+                    line-height: rem(20);
+                    white-space: normal;
+                    display: inline-block;
+                    padding-top: rem(4);
+                    padding-bottom: rem(4);
+
+                    @include helper-breakpoint-media-min($xl-min) {
+                        font-size: rem(18);
+                        line-height: rem(22);
+                        padding-top: rem(7);
+                        padding-bottom: rem(7);
+                    }
+
+                    &:hover {
+                        color: $setting-color-alt;
+                    }
+                }
+
+                &--brand {
+                    display: block;
+                    text-align: center;
+                    background-position: top center;
+                    background-repeat: no-repeat;
+                    background-size: cover;
+                    margin-bottom: rem(10);
+                    height: 100%;
+                    padding: 0;
+                    line-height: rem(28);
+
+                    @include helper-breakpoint-media-min($xl-min) {
+                        padding: 0;
+                        line-height: rem(35);
+                    }
+
+                    &::before {
+                        content: '';
+                        display: block;
+                        height: 100%;
+                    }
+                }
+            }
+        }
+
+        &__node-image {
+            @include helper-breakpoint-media-min($lg-min) {
+                position: relative;
+                width: 48%;
+                margin: 0 0 rem(40);
+                background-position: center center;
+                background-repeat: no-repeat;
+                background-size: cover;
+                height: rem(235);
+            }
+
+            @include helper-breakpoint-media-min($xl-min) {
+                height: rem(280);
+            }
+
+            #{$name}__link--flyout {
+                @include helper-breakpoint-media-min($lg-min) {
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                    text-align: center;
+                    padding-top: calc(100% + #{rem(15)});
+                    font-size: rem(16);
+                    line-height: rem(45);
+                }
+
+                @include helper-breakpoint-media-min($xl-min) {
+                    font-size: rem(17);
+                }
+            }
+
+            @for $i from 1 through 6 {
+                &.#{$image-class}-#{$i} {
+                    background-image: url('#{$image-url}/menu-img-#{$i}.png');
+                }
+            }
+        }
+
+        &__brand-item {
+            @include helper-breakpoint-media-min($lg-min) {
+                width: 23%;
+                margin: 0 0 rem(40);
+                background-size: cover;
+                height: rem(134);
+            }
+
+            @include helper-breakpoint-media-min($xl-min) {
+                height: rem(168);
+            }
+
+            @for $i from 1 through 4 {
+                &.#{$image-class}-#{$i} {
+                    background-image: url('#{$image-url}/image-submenu-d-#{$i}@2x.png');
+                }
+            }
+        }
+
+        &__icon {
+            display: none;
+
+            &--side-drawer {
+                display: block;
+                position: absolute;
+                top: rem(8);
+                right: 0;
+                width: rem(30);
+                height: rem(30);
+                cursor: pointer;
+            }
+
+            &--active {
+                transform: rotate(-90deg);
+            }
+        }
+
+        &--mobile {
+            margin: rem(12);
+        }
+
+        &--side-drawer {
+            margin: 0;
+            box-shadow: none;
+            position: relative;
+
+            &#{$name}--lvl-1 {
+                border-top: rem(1) dotted $setting-color-gray-3;
+            }
+
+            &#{$name}--lvl-2 {
+                padding-left: rem(14);
+            }
+        }
+    }
+}
+
+@include shop-ui-navigation-multilevel-node();

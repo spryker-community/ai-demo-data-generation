@@ -1,0 +1,15 @@
+{% extends atom('select') %}
+
+{% define config = {
+    name: 'custom-select',
+    tag: 'custom-select'
+} %}
+
+{% define attributes = {
+    'config-width': 'resolve',
+    'config-theme': 'default',
+    'auto-init': false
+} %}
+
+{% block selectClass %}{{ config.jsName }}{% endblock %}
+

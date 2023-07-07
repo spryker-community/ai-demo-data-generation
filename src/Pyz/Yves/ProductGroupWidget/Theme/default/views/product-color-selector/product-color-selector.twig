@@ -1,0 +1,20 @@
+{# @deprecated Use view 'product-item-color-selectoer' instead. #}
+{% extends template('widget') %}
+
+{% define data = {
+    idProductAbstract: _widget.idProductAbstract | default,
+    items: _widget.productGroupItems | default([])
+} %}
+
+{% block body %}
+    {% include molecule('color-selector', 'ProductGroupWidget') with {
+        class: 'text-center',
+        modifiers: ['card'],
+        data: {
+            items: data.items,
+        },
+        attributes: {
+            'target-link-class-name': 'js-product-color-group__image-' ~ data.idProductAbstract,
+        },
+    } only %}
+{% endblock %}

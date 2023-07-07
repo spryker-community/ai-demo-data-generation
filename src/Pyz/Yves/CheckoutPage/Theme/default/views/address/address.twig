@@ -1,0 +1,164 @@
+{% extends view('address', '@SprykerShop:CheckoutPage') %}
+
+{% block content %}
+    {% set jsAddressClass = 'js-address' %}
+    {% set billingSameAsShippingData = data.forms.billingSameAsShipping.vars.data %}
+
+    {% embed molecule('form') with {
+        modifiers: ['checkout-actions', 'checkout-form-elements'],
+        data: {
+            form: data.forms.address,
+            submit: {
+                enable: true,
+                text: 'general.next.button' | trans,
+                class: 'button button--large button--expand ' ~ jsAddressClass ~ '__form-submit',
+            },
+        },
+        embed: {
+            forms: {
+                shipping: data.forms.shipping,
+                billing: data.forms.billing,
+                items: data.forms.items,
+                bundleItems: data.forms.bundleItems,
+            },
+            isMultipleShipmentEnabled: data.isMultipleShipmentEnabled,
+            jsAddressClass: jsAddressClass,
+            isBillingSameAsShippingChecked: billingSameAsShippingData is not defined or billingSameAsShippingData,
+        },
+    } only %}
+        {% block fields %}
+            {% set hasShippingAddresses = data.form.shippingAddress.id_customer_address is defined %}
+
+            <h2 class="title title--primary col col--sm-12 grid grid--baseline">
+                <span class="col col--sm-12 col--md-8">{{ 'page.checkout.address.shipping-address' | trans }}</span>
+                {% if is_granted('ROLE_USER') %}
+                    <a class="link link--secondary link--align-right-from-tablet spacing-top col col--sm-12 col--md-4" href="{{ url('customer/address') }}">
+                        {{ 'page.checkout.address.manage_your_addresses' | trans }}
+                    </a>
+                {% endif %}
+            </h2>
+
+            {% if hasShippingAddresses %}
+                <div class="col col--sm-12 spacing-bottom spacing-bottom--biggest">
+                    {{ form_row(embed.forms.shipping.id_customer_address, {
+                        label: 'page.checkout.address.delivery.address_select' | trans,
+                    }) }}
+                </div>
+            {% endif %}
+
+            {% include molecule('form') with {
+                class: embed.jsAddressClass ~ '__shipping' ~ (hasShippingAddresses ? ' is-hidden ') ~ 'col col--sm-12',
+                modifiers: ['checkout-form', 'checkout-form-elements'],
+                data: {
+                    form: embed.forms.shipping,
+                    enableStart: false,
+                    enableEnd: false,
+                    layout: {
+                        salutation: 'col col--sm-12 col--lg-3',
+                        first_name: 'col col--sm-12 col--lg-4',
+                        last_name: 'col col--sm-12 col--lg-5',
+                        address1: 'col col--sm-12 col--md-8 col--lg-9',
+                        address2: 'col col--sm-12 col--md-4 col--lg-3',
+                        zip_code: 'col col--sm-12 col--lg-3',
+                        city: 'col col--sm-12 col--lg-5',
+                        iso2_code: 'col col--sm-12 col--lg-4',
+                    },
+                },
+            } only %}
+
+            {% if embed.isMultipleShipmentEnabled %}
+                {% include molecule('address-item-form', 'CheckoutPage') with {
+                    class: 'col col--sm-12 is-hidden spacing-bottom ' ~ embed.jsAddressClass ~ '__items-target',
+                    data: {
+                        form: embed.forms.items,
+                        formBundle: embed.forms.bundleItems,
+                        shippingForm: embed.forms.shipping,
+                        jsAddressClass: embed.jsAddressClass,
+                    },
+                } only %}
+            {% endif %}
+
+            <div class="grid grid--expand col col--sm-12 spacing-bottom spacing-bottom--biggest">
+                <h2 class="title title--primary col col--sm-12">{{ 'page.checkout.address.billing-address' | trans }}</h2>
+
+                <div class="col col--sm-12 {{ embed.jsAddressClass }}__billing-same-as-shipping">
+                    {{ form_row(data.form.billingSameAsShipping, {
+                        label: 'page.checkout.address.billing-same-as-shipping' | trans,
+                        component: molecule('toggler-checkbox'),
+                        attributes: {
+                            'target-class-name': embed.jsAddressClass ~ '__billing-address',
+                            'add-class-when-checked': true,
+                            'checked': embed.isBillingSameAsShippingChecked,
+                        },
+                    }) }}
+                </div>
+
+                {% embed molecule('form') with {
+                    class: 'col col--sm-12 spacing-top spacing-top--big is-hidden ' ~ embed.jsAddressClass ~  '__billing-address',
+                    modifiers: ['checkout-form-elements'],
+                    data: {
+                        form: embed.forms.billing,
+                        enableStart: false,
+                        enableEnd: false,
+                        layout: {
+                            salutation: 'col col--sm-12 col--lg-3',
+                            first_name: 'col col--sm-12 col--lg-4',
+                            last_name: 'col col--sm-12 col--lg-5',
+                            address1: 'col col--sm-12 col--md-8 col--lg-9',
+                            address2: 'col col--sm-12 col--md-4 col--lg-3',
+                            zip_code: 'col col--sm-12 col--lg-3',
+                            city: 'col col--sm-12 col--lg-5',
+                            iso2_code: 'col col--sm-12 col--lg-4',
+                        },
+                    },
+                    embed: {
+                        jsAddressClass: embed.jsAddressClass,
+                    },
+                } only %}
+                    {% block fields %}
+                        {% set hasBillingAddresses = data.form.id_customer_address is defined %}
+
+                        {% if hasBillingAddresses %}
+                            <div class="col col--sm-12 spacing-bottom spacing-bottom--small">
+                                {{ form_row(data.form.id_customer_address, {
+                                    label: 'page.checkout.address.billing.address_select' | trans,
+                                }) }}
+                            </div>
+                        {% endif %}
+
+                        <div class="{{ config.name }}__checkout-sub-form">
+                            <div class="{{ config.name }}__checkout-sub-form-content {{ embed.jsAddressClass }}__billing {{ hasBillingAddresses ? 'is-hidden' }}">
+                                {{ parent() }}
+                            </div>
+                        </div>
+                    {% endblock %}
+                {% endembed %}
+            </div>
+        {% endblock %}
+
+        {% block actions %}
+            {% set optionValueDeliverToMultipleAddresses = '-1' %}
+
+            {% include molecule('address-form-toggler', 'CustomerPage') ignore missing with {
+                attributes: {
+                    'trigger-selector': '[name="' ~ embed.forms.shipping.id_customer_address.vars.full_name ~ '"]',
+                    'target-selector': '.' ~ embed.jsAddressClass ~ '__shipping',
+                    'sub-target-selector': '.' ~ embed.jsAddressClass ~ '__items-target',
+                    'container-billing-address-selector': '.' ~ embed.jsAddressClass ~ '__billing-address',
+                    'billing-same-as-shipping-selector': '.' ~ embed.jsAddressClass ~ '__billing-same-as-shipping',
+                    'billing-same-as-shipping-toggler-selector': 'input[name="addressesForm[billingSameAsShipping]"]',
+                    'toggle-option-value': optionValueDeliverToMultipleAddresses,
+                },
+            } only %}
+
+            {% include molecule('address-form-toggler', 'CustomerPage') ignore missing with {
+                attributes: {
+                    'trigger-selector': '[name="' ~ embed.forms.billing.id_customer_address.vars.full_name ~ '"]',
+                    'target-selector': '.' ~ embed.jsAddressClass ~ '__billing',
+                },
+            } only %}
+
+            {{ parent() }}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

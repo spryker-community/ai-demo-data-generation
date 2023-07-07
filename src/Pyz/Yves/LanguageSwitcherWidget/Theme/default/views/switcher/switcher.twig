@@ -1,0 +1,23 @@
+{% extends template('widget') %}
+
+{% define data = {
+    languages: _widget.languages,
+    currentLanguage: _widget.currentLanguage,
+    additionalModifiers: ['hollow', 'header'],
+    additionalClassName: '',
+} %}
+
+{% block body %}
+    {% if data.languages is not empty %}
+        <form method="GET" action="">
+            {% include molecule('language-switcher', 'LanguageSwitcherWidget') with {
+                data: {
+                    languages: data.languages,
+                    currentLanguage: data.currentLanguage,
+                    additionalModifiers: data.additionalModifiers,
+                    additionalClassName: data.additionalClassName,
+                },
+            } only %}
+        </form>
+    {% endif %}
+{% endblock %}

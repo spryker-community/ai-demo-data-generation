@@ -1,0 +1,19 @@
+{% extends molecule('color-selector', '@SprykerShop:ProductGroupWidget') %}
+{% import _self as component %}
+
+{% define data = {
+    items: required,
+    colorAttributeName: 'pyzColorCode',
+    selectionTag: 'button',
+} %}
+
+{% block selection %}
+    {% block selectionInner %}
+        <{{ data.selectionTag }}
+            class="{{ config.name }}__item {{ activeClassName }} {{ config.jsName }}__item"
+            style="{{ backgroundColor }}"
+            {{ component.renderAttributes(dataAttributesList) }}>
+            <span class="{{ config.name }}__tooltip">{{ item.attributes.color }}</span>
+        </{{ data.selectionTag }}>
+    {% endblock %}
+{% endblock %}

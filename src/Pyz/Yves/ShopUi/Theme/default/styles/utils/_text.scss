@@ -1,0 +1,9 @@
+@include util-text() {
+    .text-middle {
+        vertical-align: middle;
+    }
+
+    .text-secondary {
+        color: $setting-color-gray-6;
+    }
+}

@@ -1,0 +1,135 @@
+{% extends view('shipment', '@SprykerShop:CheckoutPage') %}
+
+{% block content %}
+    {% embed molecule('form') with {
+        modifiers: ['checkout-actions', 'checkout-form-elements'],
+        data: {
+            form: data.forms.shipment,
+            submit: {
+                enable: true,
+                text: 'general.next.button' | trans,
+                class: 'form__action--checkout button button--large button--expand',
+            },
+            cancel: {
+                enable: true,
+                url: data.backUrl,
+                text: 'general.back.button' | trans,
+                class: 'form__action--checkout button button--hollow button--expand',
+            },
+        },
+        embed: {
+            cart: data.forms.shipment.vars.data,
+        },
+    } only %}
+        {% block fieldset %}
+            {% set shipmentGroupCollectionForm = data.form.shipmentGroups | default %}
+
+            <div class="grid">
+                <h2 class="title title--primary col col--sm-12">{{ 'checkout.step.shipment.title' | trans }}</h2>
+
+                {% for shipmentGroupForm in shipmentGroupCollectionForm %}
+                    {% if shipmentGroupForm.hash is defined %}
+                        {% do shipmentGroupForm.hash.setRendered %}
+                    {% endif %}
+
+                    <article class="checkout-block {{ loop.last ? 'checkout-block--border-bottom-less' }} grid col col--sm-12">
+                        <div class="col col--sm-12 col--lg-7">
+                            <h3 class="title title--secondary-box">
+                                {{ 'page.checkout.shipment.shipment_group_heading' | trans({
+                                    '%current%': loop.index,
+                                    '%total%': loop.length
+                                }) }}
+                            </h3>
+
+                            {% set cartItems = shipmentGroupForm.vars.data.cartItems %}
+                            {% set configuredBundleItems = cartItems | filter(item => item.configuredBundleItem is defined and item.configuredBundleItem is not empty) %}
+                            {% set itemsExceptConfiguredBundles = cartItems | filter(item => item.configuredBundleItem is not defined or item.configuredBundleItem is empty) %}
+
+                            {% widget 'QuoteConfiguredBundleWidget' args [embed.cart, configuredBundleItems] with {
+                                data: {
+                                    isEditable: false,
+                                    isQuantityVisible: true,
+                                },
+                            } only %}
+                            {% endwidget %}
+
+                            {% for item in itemsExceptConfiguredBundles %}
+                                {% set cartItem = item.bundleProduct ?? item %}
+
+                                {% embed molecule('product-card-item') with {
+                                    modifiers: ['expand', 'secondary', 'alternative', 'right-indent-from-tablet'],
+                                    data: {
+                                        productItem: cartItem,
+                                        canEditCart: false,
+                                        additionalContainerClass: '',
+                                        productOptionsModifiers: ['alternative'],
+                                    },
+                                    embed: {
+                                        bundleItems: item.bundleItems | default([]),
+                                    },
+                                } only %}
+                                    {% import _self as component %}
+                                    {% block image %}
+                                        <div class="{{ component.renderClass(config.name ~ '__image', modifiers) }} col">
+                                            {% include molecule('product-image') with {
+                                                modifiers: ['no-side-indent'],
+                                                data: {
+                                                    name: data.productItem.name,
+                                                    image: data.productItem.images[0].externalUrlLarge ?? null,
+                                                },
+                                            } only %}
+                                        </div>
+                                    {% endblock %}
+
+                                    {% block title %}
+                                        <div class="{{ component.renderClass(config.name ~ '__title', modifiers) }} col col--sm-12 col--lg-8">
+                                            {{ data.productItem.name }}
+                                        </div>
+                                    {% endblock %}
+
+                                    {% block options %}
+                                        {% if data.productItem.concreteAttributes is not empty %}
+                                            <ul>
+                                                {% for key, item in data.productItem.concreteAttributes %}
+                                                    <li>{{ ('product.attribute.' ~ key) | trans }}: {{ item }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    {% endblock %}
+
+                                    {% block bundles %}
+                                        {% include molecule('cart-bundle-list', 'ProductBundleWidget') ignore missing with {
+                                            data: {
+                                                items: embed.bundleItems,
+                                            },
+                                        } only %}
+                                    {% endblock %}
+
+                                    {% block productConfiguration %}
+                                        {% widget 'ProductConfigurationCartItemDisplayWidget'
+                                            args [data.productItem]
+                                            with {
+                                                data: {
+                                                    wrapperClassName: config.name ~ '__product-configuration-options',
+                                                    hasStatus: false,
+                                                },
+                                            } only %}
+                                        {% endwidget %}
+                                    {% endblock %}
+                                {% endembed %}
+                            {% endfor %}
+                        </div>
+
+                        <div class="col col--sm-12 col--lg-5">
+                            {% include molecule('shipment-sidebar', 'CheckoutPage') with {
+                                data: {
+                                    shipment: shipmentGroupForm.shipment,
+                                },
+                            } only %}
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

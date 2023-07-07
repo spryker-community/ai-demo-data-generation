@@ -1,0 +1,63 @@
+{# @deprecated Use molecule 'product-item' instead. #}
+{% extends molecule('product-card', '@SprykerShop:ShopUi') %}
+
+{% block body %}
+    <div class="{{ config.name }}__container">
+        <div class="{{ config.name }}__image-wrap">
+            {% block image %}
+                <a
+                    href="{{ data.url }}"
+                    class="{{ config.name }}__overlay js-product-color-group__image-{{ data.abstractId }}"
+                >
+                    {% include molecule('lazy-image') with {
+                        modifiers: ['thumbnail', 'spaceless'],
+                        data: {
+                            imageSrc: data.imageUrl,
+                            imageTitle: data.name,
+                        },
+                    } only %}
+                </a>
+            {% endblock %}
+
+            {% block labels %}
+                {{ parent() }}
+            {% endblock %}
+
+            {% block groups %}
+                {% widget 'ProductGroupWidget' args [data.abstractId] use view('product-color-selector', 'ProductGroupWidget') only %}{% endwidget %}
+            {% endblock %}
+        </div>
+
+        {% block content %}
+            <a href="{{ data.url }}" class="{{ config.name }}__info grid grid--justify grid--top grid--no-wrap">
+                {% block name %}
+                    <div class="col col--md-8 col--sm-12">
+                        {{ data.name }}
+                    </div>
+                {% endblock %}
+
+                {% block price %}
+                    {% if can('SeePricePermissionPlugin') %}
+                        <div class="col col--md-4 col--sm-12">
+                            {% include molecule('money-price') with {
+                                modifiers: ['align-right'],
+                                data: {
+                                    amount: data.price,
+                                    originalAmount: data.originalPrice is not empty ? data.originalPrice : null,
+                                },
+                            } only %}
+                        </div>
+                    {% else %}
+                        {{ 'customer.access.cannot_see_price' | trans }}
+                    {% endif %}
+                {% endblock %}
+            </a>
+
+            {% block rating %}
+                {{ parent() }}
+            {% endblock %}
+
+            {% block detail %}{% endblock %}
+        {% endblock %}
+    </div>
+{% endblock %}

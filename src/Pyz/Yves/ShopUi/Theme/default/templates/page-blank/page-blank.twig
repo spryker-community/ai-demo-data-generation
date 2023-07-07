@@ -1,0 +1,13 @@
+{% extends template('page-blank', '@SprykerShop:ShopUi') %}
+
+{% block template %}
+    {% set isCssLazyLoadSupported = true %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block footerScripts %}
+    {% include molecule('check-touch') only %}
+
+    {{ parent() }}
+{% endblock %}

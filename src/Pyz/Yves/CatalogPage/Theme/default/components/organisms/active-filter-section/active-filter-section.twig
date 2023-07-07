@@ -1,0 +1,14 @@
+{% extends organism('active-filter-section', '@SprykerShop:CatalogPage') %}
+
+{% block body %}
+    <a class="{{ config.name }}__item {{ config.name }}__item--all" href="{{ generateUrlWithoutAllActiveSearchFilters(data.facets) }}">
+        {{ 'catalog.filter.resetAllFilters' | trans }}
+        {% include atom('icon') with {
+            modifiers: ['medium', 'close-filter'],
+            data: {
+                name: 'close-filter'
+            }
+        } only %}
+    </a>
+    {{ activeFilters | join | raw }}
+{% endblock %}

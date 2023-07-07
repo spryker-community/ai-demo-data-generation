@@ -1,0 +1,13 @@
+@mixin shop-ui-navigation-header($name: '.navigation-header') {
+    #{$name} {
+        padding: rem(16) 0;
+        position: relative;
+
+        &__flyout-fullscreen,
+        &__brand-dropdown {
+            position: static;
+        }
+    }
+}
+
+@include shop-ui-navigation-header();

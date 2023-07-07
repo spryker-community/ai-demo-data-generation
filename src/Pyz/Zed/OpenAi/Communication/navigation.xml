@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config>
+    <administration>
+        <pages>
+            <open-ai>
+                <label>OpenAi</label>
+                <title>OpenAi</title>
+                <bundle>open-ai</bundle>
+                <controller>index</controller>
+                <action>index</action>
+            </open-ai>
+        </pages>
+    </administration>
+</config>

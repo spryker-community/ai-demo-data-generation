@@ -1,0 +1,9 @@
+{% extends view('product-with-cms-block', '@SprykerShop:CmsBlockWidget') %}
+
+{% block body %}
+    {% include molecule('product-cms-block', 'CmsBlockWidget') with {
+        data: {
+            idProductAbstract: data.product,
+        },
+    } only %}
+{% endblock %}

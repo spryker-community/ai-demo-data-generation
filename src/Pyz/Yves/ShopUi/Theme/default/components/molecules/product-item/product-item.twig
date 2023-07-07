@@ -1,0 +1,90 @@
+{% extends molecule('product-item', '@SprykerShop:ShopUi') %}
+
+{% block extraClass %}
+    {{ config.jsName }}
+{% endblock %}
+
+{% block body %}
+    <div class="{{ config.name }}__container">
+        <div class="{{ config.name }}__image-wrap">
+            {% block imageContainer %}
+                {{ parent() }}
+            {% endblock %}
+
+            {{ block('labels') }}
+
+            <div class="{{ config.name }}__overlay-container">
+                {% block colors %}
+                    {% widget 'ProductGroupColorWidget' args [data.idProductAbstract, data.product.selectedAttributes ?? []] use view('product-item-color-selector', 'ProductGroupWidget') with {
+                        data: {
+                            parentJsName: config.jsName,
+                            parentName: config.name,
+                        },
+                    } only %}{% endwidget %}
+                {% endblock %}
+
+                {% set isColorSelectorExist = block('colors') | spaceless %}
+
+                {% block ajaxAddToCart %}
+                    {% if data.product is iterable and can('SeeAddToCartPermissionPlugin') %}
+                        {% set isColorSelectorExist = isColorSelectorExist ?? false %}
+                        {% set ajaxButtonClasses = 'button button--expand button--large button--reset-min-width button--reset-border-radius' %}
+                        {% set ajaxButtonExtraAttributes = {} %}
+                        {% set ajaxAddToCartExtraClasses = not isColorSelectorExist ? config.name ~ '__overlay-container-col' %}
+
+                        {% block ajaxAddToCartInner %}
+                            {% widget 'ProductAbstractAddToCartButtonWidget' args [data.product] with {
+                                data: {
+                                    buttonClasses: ajaxButtonClasses,
+                                    buttonExtraClasses: config.jsName ~ '__ajax-button-add-to-cart js-node-animator__trigger',
+                                    isTextHidden: isColorSelectorExist,
+                                    extraAttributes: ajaxButtonExtraAttributes,
+                                },
+                                embed: {
+                                    ajaxAddToCartExtraClasses: ajaxAddToCartExtraClasses,
+                                },
+                            } only %}
+                                {% block ajaxButton %}
+                                    {% set extraClasses = embed.ajaxAddToCartExtraClasses %}
+                                    {{ parent() }}
+                                {% endblock %}
+                            {% endwidget %}
+                        {% endblock %}
+                    {% endif %}
+                {% endblock %}
+            </div>
+        </div>
+
+        {% block content %}
+            <a href="{{ data.url }}" class="{{ config.name }}__info {{ config.jsName }}__link-detail-page grid grid--justify grid--top grid--no-wrap">
+                {% if data.name %}
+                    <div class="col col--sm-12 col--md-8">
+                        {{ block('title') }}
+                    </div>
+                {% endif %}
+
+                <div class="col col--sm-12 col--md-4 text-right">
+                    {{ block('price') }}
+                </div>
+            </a>
+
+            <div class="{{ config.name }}__review" itemscope itemtype="http://schema.org/AggregateRating" itemprop="aggregateRating">
+                {{ block('rating') }}
+            </div>
+
+            <meta class="{{ config.jsName }}__sku" itemprop="sku" content="{{ data.metaSku }}">
+        {% endblock %}
+    </div>
+{% endblock %}
+
+{% block image %}
+    {% set extraClass = '' %}
+    {% set linkExtraClass = '' %}
+    {% set modifiers = ['spaceless'] %}
+
+    {% block productThumbnail %}
+        <a itemprop="url" class="{{ config.name }}__overlay {{ config.jsName }}__link-detail-page {{ linkExtraClass }}" href="{{ data.url }}">
+            {{ parent() }}
+        </a>
+    {% endblock %}
+{% endblock %}

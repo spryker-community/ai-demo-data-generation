@@ -1,0 +1,222 @@
+{% extends organism('product-set-cms-content', '@SprykerShop:ProductSetWidget') %}
+
+{% define data = {
+    sliderConfig: '{
+        "slidesToShow": 1,
+        "dots": false,
+        "variableWidth": true,
+        "mobileFirst": true,
+        "infinite": false,
+        "responsive": [{
+            "breakpoint": 450,
+            "settings": {
+                "slidesToShow": 2
+            }
+        },
+        {
+            "breakpoint": 680,
+            "settings": {
+                "slidesToShow": 3
+            }
+        },
+        {
+            "breakpoint": 800,
+            "settings": {
+                "slidesToShow": 1
+            }
+        },
+        {
+            "breakpoint": 1000,
+            "settings": {
+                "slidesToShow": 2
+            }
+        }]
+    }',
+    addAllSetButton: false,
+} %}
+
+{% set generalAddToCartButtonClass = 'float-right' %}
+
+{% block body %}
+    {% block header %}
+        {% if data.addAllSetButton %}
+            {% block generalAddToCart %}
+                {% widget 'AddItemsFormWidget' args [config, data, data.products] with {
+                    embed: {
+                        jsName: config.jsName,
+                        generalAddToCartButtonClass: generalAddToCartButtonClass,
+                    },
+                } only %}
+                    {% block embeddedData %}
+                        {% set isDisabled = false %}
+
+                        {% for product in data.data.products %}
+                            {% if product.idProductConcrete is not empty and product.available %}
+                                <input type="hidden" name="items[{{ loop.index }}][sku]" class="{{ embed.jsName }}__product-sku-hidden-input" value="{{ product.sku }}">
+                                <input type="hidden" name="items[{{ loop.index }}][quantity]" value="1">
+                            {% endif %}
+
+                            {% if product.idProductConcrete is empty %}
+                                {% set isDisabled = true %}
+                            {% endif %}
+                        {% endfor %}
+
+                        <button class="button {{ data.data.buttonClass }} {{ embed.generalAddToCartButtonClass }}" {{ isDisabled ? 'disabled' : 'data-init-single-click' }}>
+                            {{- 'product.set.detail.add-all-to-cart' | trans -}}
+                        </button>
+                    {% endblock %}
+                {% endwidget %}
+            {% endblock %}
+        {% endif %}
+
+        {% block title %}
+            {% include molecule('product-slider-title') with {
+                modifiers: ['set'],
+                data: {
+                    title: data.name,
+                },
+            } only %}
+        {% endblock %}
+
+        {% block description %}
+            {% if data.description %}
+                <div class="grid">
+                    <p class="col col--sm-12 col--lg-5 node node--product-set">{{ data.description }}</p>
+                </div>
+            {% endif %}
+        {% endblock %}
+    {% endblock %}
+
+    <div class="grid grid--stretch">
+        <div class="col col--sm-12 col--lg-5 product-set-slider product-set-slider--single">
+            {% block carousel %}
+                {% embed molecule('slick-carousel') with {
+                    data: {
+                        slides: data.images,
+                    },
+                    attributes: {
+                        'data-json': '{
+                            "slidesToShow": 1,
+                            "dots": true,
+                            "arrows": false
+                        }',
+                    },
+                    modifiers: ['product-set'],
+                } only %}
+
+                    {% block slides %}
+                        {% for slide in data.slides %}
+                            {% include molecule('lazy-image') with {
+                                modifiers: ['thumbnail', 'spaceless', 'product-set'],
+                                data: {
+                                    imageSrc: slide.externalUrlLarge,
+                                    extraAttributes: {
+                                        itemprop: 'image',
+                                    },
+                                },
+                            } only %}
+                        {% endfor %}
+                    {% endblock %}
+                {% endembed %}
+            {% endblock %}
+        </div>
+        <div class="col col--sm-12 col--lg-7 product-set-slider product-set-slider--hide-prev-btn product-set-slider--multiple">
+            {% block productSet %}
+                <form method="GET">
+                    {% embed molecule('slick-carousel') with {
+                        data: {
+                            slides: data.products,
+                        },
+                        attributes: {
+                            'data-json': data.sliderConfig,
+                            'custom-select-class-name': 'custom-select',
+                        },
+                        modifiers: ['product-set', 'product-set-secondary'],
+                        embed: {
+                            jsName: config.jsName,
+                        },
+                    } only %}
+                        {% block slides %}
+                            {% for product in data.slides %}
+                                {% embed molecule('product-item') with {
+                                    modifiers: ['stretch', 'product-set', 'widget'],
+                                    class: embed.jsName ~ '__product-item',
+                                    data: {
+                                        product: product,
+                                    },
+                                } only %}
+                                    {% block content %}
+                                        {{ parent() }}
+                                        {% set isNotAvailable = data.product.idProductConcrete and not data.product.available %}
+
+                                        {% embed molecule('variant-configurator', 'ProductDetailPage') with {
+                                            data: {
+                                                superAttributes: data.product.attributeMap.superAttributes,
+                                                selectedAttributes: data.product.selectedAttributes,
+                                                availableAttributes: data.product.availableAttributes,
+                                                useExternalForm: true,
+                                            },
+                                            embed: {
+                                                idProductAbstract: data.idProductAbstract,
+                                            },
+                                        } only %}
+                                            {% block variant %}
+                                                {% include molecule('variant', 'ProductDetailPage') with {
+                                                    data: {
+                                                        name: name,
+                                                        formName: 'attributes[' ~ embed.idProductAbstract ~ '][' ~ name ~ ']',
+                                                        values: values,
+                                                        selectedValue: selectedValue,
+                                                        label: ('product.attribute.' ~ name) | trans,
+                                                        isAvailable: isAvailable,
+                                                        autoInitSelect: true,
+                                                    },
+                                                } only %}
+                                            {% endblock %}
+                                        {% endembed %}
+
+                                        {% if isNotAvailable %}
+                                            <p><strong>{{ 'product.detail.out_of_stock' | trans }}</strong></p>
+                                        {% else %}
+                                            {% set isDisabled = not data.product.idProductConcrete or not data.product.available %}
+
+                                            {% if isDisabled %}
+                                                <button class="button button--expand" disabled>{{ 'page.detail.add-to-cart' | trans }}</button>
+                                            {% else %}
+                                                {% widget 'AddToCartFormWidget' args [config, data.product, isDisabled] only %}
+                                                    {% block body %}
+                                                        {% set productSku = data.product.sku %}
+                                                        {% set formAction = path('cart/add', {'sku': productSku}) %}
+                                                        {% set tokenField = data.form._token.vars %}
+
+                                                        {% include molecule('remote-form-submit') with {
+                                                            data: {
+                                                                label: 'page.detail.add-to-cart' | trans,
+                                                                buttonClass: 'button button--expand ' ~ data.config.jsName ~ '__button-add-to-cart',
+                                                                buttonExtraAttributes: {
+                                                                    'data-form-action': formAction,
+                                                                    'data-init-single-click': true,
+                                                                    'data-qa': 'add-to-cart-button',
+                                                                },
+                                                            },
+                                                            attributes: {
+                                                                'form-name': 'addToCartForm_' ~ productSku,
+                                                                'form-action': formAction,
+                                                                'field-name': tokenField.full_name,
+                                                                'field-value': tokenField.value,
+                                                            },
+                                                        } only %}
+                                                    {% endblock %}
+                                                {% endwidget %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endblock %}
+                                {% endembed %}
+                            {% endfor %}
+                        {% endblock %}
+                    {% endembed %}
+                </form>
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,23 @@
+namespace: PyzTest\Yves\Application
+
+paths:
+    tests: .
+    data: _data
+    support: _support
+    output: _output
+
+coverage:
+    enabled: true
+    remote: false
+    whitelist: { include: ['../../../../src/*'] }
+
+suites:
+    Controller:
+        path: .
+        actor: ApplicationControllerTester
+        modules:
+            enabled:
+                - \SprykerTest\Yves\Testify\Helper\YvesEnvironment
+                - \SprykerTest\Shared\Testify\Helper\ConfigHelper
+                - \PyzTest\Yves\Testify\Helper\DebugHelper
+                - \PyzTest\Yves\Testify\Helper\BootstrapHelper

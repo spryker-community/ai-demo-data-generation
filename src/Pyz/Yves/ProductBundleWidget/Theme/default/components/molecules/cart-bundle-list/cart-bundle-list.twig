@@ -1,0 +1,40 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'cart-bundle-list',
+    tag: 'ul',
+} %}
+
+{% define data = {
+    items: required,
+} %}
+
+{% block component %}
+    {% if data.items %}
+        {{ parent() }}
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {% for item in data.items %}
+        <li class="{{ config.name }}__item">
+            {% set imageUrl = item.images.0.externalUrlSmall ?? '' %}
+            {% set itemName = item.name %}
+
+            {% if imageUrl %}
+                {% include molecule('lazy-image') with {
+                    modifiers: ['thumbnail', 'with-overlay', 'cart-bundle'],
+                    data: {
+                        imageSrc: imageUrl,
+                        imageTitle: itemName,
+                    },
+                } only %}
+            {% endif %}
+
+            <p class="{{ config.name }}__title">
+                {{ itemName }}
+                <span class="{{ config.name }}__quantity">{{ item.quantity | executeFilterIfExists('formatInt', app.locale) }}x </span>
+            </p>
+        </li>
+    {% endfor %}
+{% endblock %}

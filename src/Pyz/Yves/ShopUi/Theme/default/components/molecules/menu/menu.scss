@@ -1,0 +1,174 @@
+@mixin shop-ui-menu($name: '.menu') {
+    @include shop-ui-list($name) {
+        &__item {
+            @include helper-font-weight(regular);
+            margin: rem(8) 0;
+
+            &--active {
+                @include helper-font-weight(bold);
+            }
+
+            &--has-children-list {
+                margin-bottom: rem(16);
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+
+                & #{$name}__item {
+                    @include helper-font-size(small);
+                    margin: rem(8);
+                }
+            }
+
+            &--side-drawer {
+                border-top: rem(1) dotted $setting-color-gray-3;
+                margin: 0;
+
+                & > #{$name} {
+                    padding-bottom: rem(10);
+                }
+
+                & #{$name}__item {
+                    font-size: rem(15);
+
+                    &:first-child {
+                        margin-top: 0;
+                    }
+                }
+            }
+
+            &--has-children-dropdown {
+                position: relative;
+                z-index: $setting-zi-element + 1;
+
+                & > #{$name} {
+                    @include helper-visibility-invisible;
+                    @include helper-effect-transition;
+                    position: absolute;
+                    left: 0;
+                    margin-left: -rem(8);
+                    border: none;
+                    padding: rem(8);
+                    background-color: $setting-color-white;
+                }
+
+                &:hover > #{$name} {
+                    @include helper-visibility-visible;
+                }
+
+                & > #{$name} > #{$name}__item {
+                    margin-left: rem(8);
+                    margin-right: rem(8);
+                }
+            }
+        }
+
+        &__link {
+            &--side-drawer {
+                text-transform: uppercase;
+                font: fw(medium) rem(13) $setting-font-family-additional;
+                letter-spacing: rem(2);
+                white-space: nowrap;
+                display: inline-block;
+                padding: rem(16) 0;
+            }
+        }
+
+        &__separator {
+            &:not(&--horizontal-line) {
+                display: inline-block;
+                margin: 0 rem(8);
+
+                &::after {
+                    content: '|';
+                    color: $setting-color-gray-6;
+                }
+            }
+
+            &--horizontal-line {
+                display: block;
+                border-top: rem(1) solid $setting-color-gray-6;
+            }
+        }
+
+        &--customer-navigation {
+            margin-top: rem(30);
+
+            #{$name}__item {
+                &--active {
+                    & > #{$name}__link {
+                        font-weight: fw(regular);
+                        color: $setting-color-alt;
+                    }
+                }
+            }
+        }
+
+        &--side-drawer {
+            border-bottom: rem(1) dotted $setting-color-gray-3;
+        }
+
+        &--customer-account {
+            #{$name}__item,
+            #{$name}__link {
+                letter-spacing: rem(0.2);
+            }
+
+            #{$name}__link {
+                background: none;
+                color: $setting-color-black;
+                font: fw(light) rem(16) $setting-font-family;
+                cursor: pointer;
+
+                &:hover {
+                    color: $setting-color-alt;
+                    text-decoration: underline;
+                }
+            }
+
+            #{$name}__button {
+                letter-spacing: rem(0.2);
+                font: fw(light) rem(14) $setting-font-family;
+                color: $setting-color-text;
+                background: $setting-color-transparent;
+
+                &:hover {
+                    cursor: pointer;
+                    color: $setting-color-alt;
+                    text-decoration: underline;
+                }
+
+                @include helper-breakpoint-media-min($md-min) {
+                    font-size: rem(16);
+                }
+            }
+        }
+
+        &--order-summary {
+            #{$name}__item {
+                font: fw(light) rem(16) $setting-font-family-additional;
+                margin: rem(10) 0;
+            }
+        }
+
+        &--actions {
+            #{$name}__item {
+                margin: 0;
+
+                @include helper-breakpoint-media-min($md-min) {
+                    white-space: nowrap;
+                    margin: 0 rem(8);
+                }
+            }
+        }
+
+        &--middle {
+            vertical-align: middle;
+        }
+
+        @content;
+    }
+}
+
+@include shop-ui-menu();

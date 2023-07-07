@@ -1,0 +1,10 @@
+{% extends molecule('money-price', '@SprykerShop:ShopUi') %}
+
+{% block defaultPriceInner %}
+    {% set defaultPriceJsName = data.parentJsName ? data.parentJsName ~ '__default-price' %}
+
+    <span itemprop="price" content="{{ data.amount | moneyRaw }}" class="{{ config.name }}__amount {{ defaultPriceJsName }}">
+        <meta itemprop="priceCurrency" content="{{ currencyIsoCode() }}">
+        {{- data.amount | money(true, data.currencyIsoCode) -}}
+    </span>
+{% endblock %}

@@ -1,0 +1,58 @@
+@mixin catalog-page-product-list($name: '.product-list') {
+    #{$name} {
+        margin-right: rem(-15);
+        margin-left: rem(-15);
+        max-width: none;
+
+        @include helper-breakpoint-media-max($sm-max) {
+            margin-right: rem(-5);
+            margin-left: rem(-5);
+        }
+
+        @content;
+    }
+
+    .catalog-left-side {
+        display: none;
+
+        @include helper-breakpoint-media-min($xl-min) {
+            display: block;
+            padding-top: rem(60);
+            padding-right: rem(15);
+            padding-bottom: rem(50);
+        }
+    }
+
+    .catalog-right-side {
+        @include helper-breakpoint-media-min($xl-min) {
+            padding-top: rem(60);
+            padding-left: rem(15);
+        }
+    }
+
+    .spelling-suggestion {
+        padding-top: rem(30);
+        width: 100%;
+    }
+
+    @include helper-breakpoint-media-max($lg-max) {
+        .show-filter {
+            .catalog-left-side {
+                display: block;
+                position: fixed;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                z-index: $setting-zi-navigation-top + 2;
+                background-color: $setting-color-white;
+            }
+
+            .catalog-left-side__switcher {
+                display: none;
+            }
+        }
+    }
+}
+
+@include catalog-page-product-list();

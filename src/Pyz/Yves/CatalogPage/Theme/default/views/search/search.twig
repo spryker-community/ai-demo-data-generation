@@ -1,0 +1,54 @@
+{% extends template('page-layout-catalog', 'CatalogPage') %}
+
+{% define data = {
+    suggestion: _view.spellingSuggestion,
+    searchString: _view.searchString | default,
+    title: ('global.search.results' | trans) ~ ' ' ~ _view.searchString,
+    pagination: {
+        paginationPath: app.request.attributes.get('_route'),
+    },
+} %}
+
+{% block breadcrumb %}
+    {% include molecule('breadcrumb') with {
+        modifiers: ['no-border'],
+        data: {
+            steps: [{
+                label: 'global.search' | trans
+            }]
+        }
+    } only %}
+{% endblock %}
+
+{% block title %}
+
+    {% include molecule('jumbotron') with {
+        modifiers: ['category', 'category-no-img'],
+        data: {
+            headline: data.searchString,
+            subHeadline: 'global.search.results' | trans
+        }
+    } only %}
+{% endblock %}
+
+{% block form %}
+    <div class="col col--sm-12 spacing spacing--inner">
+        {% widget 'FullTextSearchTabsWidget' args [data.searchString, 'FullTextSearchProductsTab'] only %}{% endwidget %}
+    </div>
+
+    {% embed molecule('spelling-suggestion', 'CatalogPage') with {
+        data: {
+            suggestion: data.suggestion
+        }
+    } only %}
+        {% block body %}
+            {{parent()}}
+        {% endblock %}
+    {% endembed %}
+
+    {{parent()}}
+
+    {% if data.searchString is not empty %}
+        <input type="hidden" name="q" value="{{ data.searchString }}" />
+    {% endif %}
+{% endblock %}

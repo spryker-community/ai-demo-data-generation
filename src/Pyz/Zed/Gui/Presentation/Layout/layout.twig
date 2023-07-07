@@ -1,0 +1,6 @@
+{% extends '@Spryker:Gui/Layout/layout.twig' %}
+
+{% block init_js %}
+    {{ parent() }}
+    <script src="{{ assetsPath('js/openai.js') }}"></script>
+{% endblock %}

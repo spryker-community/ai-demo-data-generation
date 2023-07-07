@@ -1,0 +1,72 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'variant'
+} %}
+
+{% define data = {
+    name: required,
+    formName: required,
+    values: required,
+    selectedValue: null,
+    label: '',
+    isAvailable: true,
+    autoInitSelect: false
+} %}
+
+{% block body %}
+    {% embed molecule('toggler-item') with {
+        modifiers: modifiers | merge(['with-top-border', 'option']),
+        data: {
+            title: data.label,
+            isToggler: false,
+        },
+        embed: {
+            selectedValue: data.selectedValue,
+            isAvailable: data.isAvailable,
+            formName: data.formName,
+            values: data.values,
+            autoInitSelect: data.autoInitSelect
+        }
+    } only %}
+        {% block contentText %}
+            {% if embed.selectedValue is null %}
+                {% if embed.isAvailable %}
+                    {% embed molecule('custom-select') with {
+                        modifiers: ['expand'],
+                        attributes: {
+                            name: embed.formName,
+                            'auto-init': embed.autoInitSelect,
+                            'data-form-submitter': '',
+                        },
+                        embed: {
+                            values: embed.values,
+                        },
+                    } only %}
+                        {% block options %}
+                            <option value="">{{ 'product.attribute._none' | trans }}</option>
+                            {% for value in embed.values %}
+                                <option value="{{value}}">{{value}}</option>
+                            {% endfor %}
+                        {% endblock %}
+                    {% endembed %}
+                {% else %}
+                    {{ 'product.attribute.not_available' | trans }}
+                {% endif %}
+            {% else %}
+                {% set isVariantsMultiple = embed.values | length > 1 %}
+
+                {% if isVariantsMultiple %}
+                    {% include molecule('variant-resetter', 'ProductDetailPage') with {
+                        data: {
+                            formName: embed.formName,
+                            selectedValue: embed.selectedValue,
+                        },
+                    } only %}
+                {% else %}
+                    {{ embed.selectedValue }}
+                {% endif %}
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

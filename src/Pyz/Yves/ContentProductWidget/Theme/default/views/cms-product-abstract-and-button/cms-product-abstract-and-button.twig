@@ -1,0 +1,39 @@
+{% extends template('widget') %}
+
+{% define data = {
+    productAbstractViewCollection: productAbstractViewCollection,
+} %}
+
+{% block body %}
+    <div class="grid product-list">
+        {% for productAbstractView in data.productAbstractViewCollection %}
+            {% if productAbstractView.available %}
+                {% embed molecule('product-item') with {
+                    class: 'col col--sm-6 col--lg-3',
+                    modifiers: ['cms'],
+                    data: {
+                        product: productAbstractView,
+                    },
+                } only %}
+                    {% block body %}
+                        {{ parent() }}
+
+                        {% set sku = data.sku %}
+
+                        <div class="{{ config.name }}__actions-container">
+                            {% include molecule('ajax-add-to-cart') with {
+                                data: {
+                                    url: sku ? (path('cart/add-ajax', {'sku': sku})),
+                                    csrfToken: csrf_token('add-to-cart-ajax'),
+                                    extraAttributes: not sku ? {disabled: true},
+                                    buttonText: 'page.detail.add-to-cart' | trans,
+                                    iconName: '',
+                                },
+                            } only %}
+                        </div>
+                    {% endblock %}
+                {% endembed %}
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

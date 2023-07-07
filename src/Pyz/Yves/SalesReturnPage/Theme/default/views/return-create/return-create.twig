@@ -1,0 +1,26 @@
+{% extends view('return-create', '@SprykerShop:SalesReturnPage') %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block salesReturnContent %}
+    {% set contentWrapperClass = 'box spacing-top spacing-top--big' %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block salesReturnContentHeader %}
+    {% include molecule('return-title-block', 'SalesReturnPage') with {
+        data: {
+            idSalesOrder: data.order.idSalesOrder,
+        },
+    } only %}
+{% endblock %}
+
+{% block salesReturnOrderInfo %}
+    {% include molecule('return-header-information', 'SalesReturnPage') with {
+        data: {
+            orderReference: data.order.orderReference,
+            createdAt: data.order.createdAt,
+        },
+    } only %}
+{% endblock %}

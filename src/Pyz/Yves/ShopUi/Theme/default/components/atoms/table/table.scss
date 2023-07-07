@@ -1,0 +1,145 @@
+@include shop-ui-table {
+    &__body,
+    tbody {
+        tr {
+            &:last-child {
+                border-bottom: rem(1) solid $setting-color-gray-3;
+            }
+
+            &:nth-child(even) {
+                background: none;
+            }
+        }
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    &--customer-account {
+        td,
+        th {
+            padding: rem(8);
+        }
+
+        .checkbox {
+            margin: rem(4) 0 0;
+        }
+    }
+
+    &--order,
+    &--return {
+        th,
+        td {
+            font-size: rem(14);
+
+            @include helper-breakpoint-media-min($md-min) {
+                font-size: rem(16);
+            }
+        }
+    }
+
+    &--order-detail {
+        th,
+        td {
+            font-size: rem(11);
+            padding: rem(4);
+
+            @include helper-breakpoint-media-min($md-min) {
+                font-size: rem(16);
+                padding: rem(8);
+            }
+        }
+
+        .checkbox {
+            margin: 0;
+
+            @include helper-breakpoint-media-min($md-min) {
+                margin: rem(4) 0 0;
+            }
+        }
+    }
+
+    &--wishlist {
+        th,
+        td {
+            padding-left: 0;
+
+            @include helper-breakpoint-media-min($lg-min) {
+                padding-left: rem(4);
+            }
+        }
+
+        td:first-child {
+            width: 5%;
+        }
+    }
+
+    &--responsive {
+        @include helper-breakpoint-media-max($md-max) {
+            display: block;
+
+            tbody,
+            td {
+                display: block;
+            }
+
+            thead {
+                display: none;
+            }
+
+            /* stylelint-disable selector-max-type */
+            tbody tr {
+                display: block;
+                background-color: $setting-color-transparent !important;
+                border-top: none;
+                padding-bottom: rem(15);
+
+                &:last-child {
+                    border-bottom: none;
+                }
+            }
+            /* stylelint-enable */
+
+            td {
+                padding: 0 rem(10);
+
+                &::before {
+                    font-weight: fw(medium);
+                    display: inline-block;
+                    vertical-align: top;
+                    width: auto;
+                    padding-right: rem(10);
+                    flex-shrink: 0;
+                }
+            }
+
+            .transform-cell {
+                display: flex;
+                align-items: baseline;
+                position: relative;
+                background-color: $setting-color-gray-1;
+
+                &::before {
+                    content: attr(data-content) ':';
+                }
+
+                &--spacing-top {
+                    padding-top: rem(15);
+                }
+
+                &--spacing-bottom {
+                    padding-bottom: rem(15);
+                }
+            }
+        }
+    }
+
+    &__tr--with-border {
+        border-top: rem(1) solid $setting-color-gray-3;
+    }
+
+    &__tr--with-border-bottom {
+        border-bottom: rem(1) solid $setting-color-gray-3;
+    }
+}

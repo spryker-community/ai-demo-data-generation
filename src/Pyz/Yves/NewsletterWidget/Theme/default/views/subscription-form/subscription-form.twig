@@ -1,0 +1,17 @@
+{% extends view('subscription-form', '@SprykerShop:NewsletterWidget') %}
+
+{% define data = {
+    events: {
+        success: _view.success,
+        error: _view.error,
+    },
+} %}
+
+{% block body %}
+    {% include molecule('subscription-form', 'NewsletterWidget') with {
+        data: {
+            form: data.form,
+            events: data.events,
+        },
+    } only %}
+{% endblock %}

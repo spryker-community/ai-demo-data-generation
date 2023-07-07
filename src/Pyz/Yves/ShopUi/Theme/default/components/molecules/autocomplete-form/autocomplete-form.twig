@@ -1,0 +1,26 @@
+{% extends molecule('autocomplete-form', '@SprykerShop:ShopUi') %}
+
+{% block input %}
+    <div class="{{ config.name }}__field">
+        <input name="query"
+               type="text"
+               class="input input--expand {{ config.name }}__input {{ config.jsName }}__input"
+               placeholder="{{ 'autocomplete.placeholder' | trans }}"
+               value="{{ data.value }}"
+               autocomplete="off">
+
+        <input type="hidden" name="{{ data.name }}" class="{{ config.jsName }}__input-hidden" value="{{ data.hiddenValue }}">
+
+        {% if data.showCleanButton %}
+            {% block cleanButton %}
+                <button type="button" class="button button--skinless {{ config.name }}__clean-button {{ config.jsName }}__clean-button">
+                    {% include atom('icon') with {
+                        data: {
+                            name: 'close',
+                        },
+                    } only %}
+                </button>
+            {% endblock %}
+        {% endif %}
+    </div>
+{% endblock %}

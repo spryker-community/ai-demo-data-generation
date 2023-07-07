@@ -1,0 +1,26 @@
+{% extends molecule('banner', '@SprykerShop:ShopUi') %}
+
+{% block body %}
+    <a class="{{ config.name }}__link" href="{{ data.clickUrl }}">
+        {% block content %}
+            {% block image %}
+                {% include molecule('lazy-image') with {
+                    data: {
+                        imageSrc: data.imageUrl,
+                        imageTitle: data.altText | escape,
+                    },
+                } only %}
+            {% endblock %}
+
+            {% block title %}
+                {% if data.title %}
+                    <h5 class="title title--h4">{{ data.title | escape }}</h5>
+                {% endif %}
+            {% endblock %}
+
+            {% block subtitle %}
+                {{ parent() }}
+            {% endblock %}
+        {% endblock %}
+    </a>
+{% endblock %}

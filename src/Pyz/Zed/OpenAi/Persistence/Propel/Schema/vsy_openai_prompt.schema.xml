@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<database xmlns="spryker:schema-01" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="zed" xsi:schemaLocation="spryker:schema-01 https://static.spryker.com/schema-01.xsd" namespace="Orm\Zed\OpenAi\Persistence" package="src.Orm.Zed.OpenAi.Persistence">
+
+    <table name="vsy_openai_prompt" idMethod="native">
+        <column name="id_openai_prompt" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_locale" type="INTEGER"/>
+        <column name="name" required="true" type="VARCHAR" size="255" description="The prompt(s) name."/>
+        <column name="prompt" required="true" type="LONGVARCHAR" description="The prompt(s) to use to run the OpenAI query. See the OpenAI Example page for inspiration and refine your prompt in the OpenAI Playground. This can contain a string, array of strings, array of tokens, or array of token arrays."/>
+        <column name="model" required="true" type="VARCHAR" default="text-davinci-003" description="ID of the model to use. You can use the List models API to see all of your available models, or see our Model overview for descriptions of them."/>
+        <column name="suffix" size="255" type="VARCHAR" description="The suffix that comes after a completion of inserted text."/>
+        <column name="max_tokens" type="INTEGER" description="The maximum number of tokens to generate in the completion. The token count of your prompt plus max_tokens cannot exceed the model's content."/>
+        <column name="temperature" type="FLOAT" description="What sampling temperature to use. Higher values means the model will take more risks. Try 0.9 for more creative applications, and 0 (argmax sampling) for ones with a well-defined answer."/>
+        <column name="top_p" type="FLOAT" description="An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered."/>
+        <column name="n_completions" type="FLOAT" description="How many completions to generate for each prompt. Note: Because this parameter generates many completions, it can quickly consume your token quota. Use carefully and ensure that you have reasonable settings for max_tokens and stop:"/>
+        <column name="stream" type="BOOLEAN" description="Whether to stream back partial progress. If set, tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] me..."/>
+        <column name="logprobs" type="FLOAT" description="Include the log probabilities on the logprobs most likely tokens, as well the chosen tokens. For example, if logprobs is 5, the API will return a list of the 5 most likely tokens. The API will always return the logprob of the sampled token, so there may be up..."/>
+        <column name="echo" type="BOOLEAN" description="Echo back the prompt in addition to the completion."/>
+        <column name="stop" type="LONGVARCHAR" description="Up to 4 sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence."/>
+        <column name="presence_penalty" type="FLOAT" description="Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics."/>
+        <column name="frequency_penalty" type="INTEGER" description="Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics."/>
+        <column name="best_of" type="INTEGER" description="Generates best_of completions server-side and returns the 'best' (the one with the highest log probability per token). Results cannot be streamed."/>
+        <column name="user" size="64" type="VARCHAR" description="A unique identifier representing your end-user, which will help OpenAI to monitor and detect abuse. Learn more."/>
+        <foreign-key name="vsy_openai_prompt-fk_locale" foreignTable="spy_locale" phpName="Locale">
+            <reference local="fk_locale" foreign="id_locale"/>
+        </foreign-key>
+        <id-method-parameter value="vsy_openai_prompt_pk_seq"/>
+        <behavior name="timestampable"/>
+    </table>
+
+    <table name="vsy_openai_prompt_to_event" idMethod="native">
+        <column name="id_openai_prompt_to_event" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
+        <column name="fk_openai_prompt" type="INTEGER"/>
+        <column name="event" required="true" type="VARCHAR" size="255" description="The prompt(s) name."/>
+        <unique name="vsy_openai_prompt_to_event-event">
+            <unique-column name="event"/>
+        </unique>
+        <foreign-key name="vsy_openai_prompt_to_event-fk_openai_prompt" foreignTable="vsy_openai_prompt">
+            <reference local="fk_openai_prompt" foreign="id_openai_prompt"/>
+        </foreign-key>
+        <id-method-parameter value="vsy_openai_prompt_to_event_pk_seq"/>
+        <behavior name="timestampable"/>
+    </table>
+</database>

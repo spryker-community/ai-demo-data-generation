@@ -1,0 +1,28 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% block action %}
+    {{ createActionButton('/open-ai/create/index', 'Create Prompt' | trans) }}
+{% endblock %}
+
+{% block content %}
+
+    {% embed '@Gui/Partials/widget.twig' with { widget_title: 'OpenAi' } %}
+        {% block widget_title %}
+            <style>
+                @keyframes spin {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+
+                .rotate {
+                    animation: spin 2s linear infinite;
+                }
+            </style>
+
+            <h5>OpenAi <img src='https://seeklogo.com/images/O/open-ai-logo-8B9BFEDC26-seeklogo.com.png' style='width: 30px; padding-left: 5px;' class="rotate" /></h5>
+        {% endblock %}
+        {% block widget_content %}
+            {{ OpenAis | raw }}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

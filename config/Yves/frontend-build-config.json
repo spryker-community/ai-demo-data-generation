@@ -1,0 +1,12 @@
+{
+    "path": "assets/%SPRYKER_BUILD_HASH%/%theme%",
+    "staticPath": "assets/static",
+    "namespaces": [
+        {
+            "codeBucket": "",
+            "namespace": "",
+            "themes": [],
+            "defaultTheme": "default"
+        }
+    ]
+}

@@ -1,0 +1,12 @@
+{% extends molecule('active-filter-price-range', '@SprykerShop:CatalogPage') %}
+
+{% block component %}
+    {% if app.request.query.has(data.filter.config.parameterName) %}
+        {% include molecule('active-filter', 'CatalogPage') with {
+            data: {
+                filter: data.filter,
+                value: currentValue,
+            },
+        } only %}
+    {% endif %}
+{% endblock %}

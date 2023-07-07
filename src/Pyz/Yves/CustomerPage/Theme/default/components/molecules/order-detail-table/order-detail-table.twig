@@ -1,0 +1,140 @@
+{% extends molecule('order-detail-table', '@SprykerShop:CustomerPage') %}
+
+{% block body %}
+    {% set isGiftCardExists = null %}
+
+    {% for shipmentGroup in data.shipmentGroups %}
+        <article class="order-detail-block grid">
+            <div class="col col--sm-12 col--xl-8">
+                <h3 class="title title--secondary-box">
+                    {{ 'page.checkout.shipment.shipment_group_heading' | trans({
+                        '%current%': loop.index,
+                        '%total%': loop.length,
+                    }) }}
+                </h3>
+
+                {% for item in shipmentGroup.cartItems %}
+                    {% set cartItem = item.bundleProduct ?? item %}
+                    {% set isConfiguredBundle = cartItem.salesOrderConfiguredBundleItem is defined and cartItem.salesOrderConfiguredBundleItem is not empty %}
+                    {% set isGiftCardExists = cartItem.giftCardMetadata is not null and cartItem.giftCardMetadata.isGiftCard %}
+
+                    {% if not isConfiguredBundle %}
+                        {% embed molecule('product-card-item') with {
+                            modifiers: ['expand', 'secondary', 'alternative', 'right-indent-from-tablet', 'with-checkbox'],
+                            data: {
+                                productItem: cartItem,
+                                canEditCart: false,
+                                additionalContainerClass: '',
+                                productOptionsModifiers: ['alternative'],
+                            },
+                            embed: {
+                                order: data.order,
+                                bundleItems: item.bundleItems | default([]),
+                                reorderSelectionClassName: data.reorderSelectionClassName,
+                            },
+                        } only %}
+                            {% import _self as component %}
+                            {% block image %}
+                                <div class="grid grid--middle col">
+                                    {% if embed.order is not empty %}
+                                        <span class="spacing-right">
+                                            {% if data.productItem.bundleItemIdentifier ?? false %}
+                                                {% widget 'CustomerReorderBundleItemCheckboxWidget' args [data.productItem] with {
+                                                    data: {
+                                                        checkboxClasses: embed.reorderSelectionClassName,
+                                                        additionalModifiers: ['big'],
+                                                    },
+                                                } only %}
+                                                {% endwidget %}
+                                            {% else %}
+                                                {% widget 'CustomerReorderItemCheckboxWidget' args [data.productItem] with {
+                                                    data: {
+                                                        checkboxClasses: embed.reorderSelectionClassName,
+                                                        additionalModifiers: ['big'],
+                                                    },
+                                                } only %}
+                                                {% endwidget %}
+                                            {% endif %}
+                                        </span>
+                                    {% endif %}
+
+                                    <div class="{{ component.renderClass(config.name ~ '__image', modifiers) }} col">
+                                        {% include molecule('product-image') with {
+                                            modifiers: ['no-side-indent'],
+                                            data: {
+                                                name: data.productItem.name,
+                                                image: data.productItem.metadata.image,
+                                            },
+                                        } only %}
+                                    </div>
+                                </div>
+                            {% endblock %}
+
+                            {% block title %}
+                                <div class="{{ component.renderClass(config.name ~ '__title', modifiers) }} col col--sm-12 col--lg-8">
+                                    {{ data.productItem.name }}
+                                </div>
+                            {% endblock %}
+
+                            {% block options %}
+                                {% if data.productItem.concreteAttributes is not empty %}
+                                    <ul>
+                                        {% for key, item in data.productItem.concreteAttributes %}
+                                            <li>{{ ('product.attribute.' ~ key) | trans }}: {{ item }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            {% endblock %}
+
+                            {% block productConfiguration %}
+                                {% widget 'ProductConfigurationOrderItemDisplayWidget' args [data.productItem] only %}
+                                    {% block body %}
+                                        <div class="spacing-bottom">
+                                            {{ parent() }}
+                                        </div>
+                                    {% endblock %}
+                                {% endwidget %}
+                            {% endblock %}
+
+                            {% block state %}
+                                {% set itemState = data.productItem.state ?? {} %}
+
+                                {% if itemState %}
+                                    {% set state = itemState.name | replace({' ': '-'}) | lower %}
+                                    {% set stateLabel = itemState.displayName ?? ('oms.state.' ~ state) %}
+
+                                    {% include molecule('status') with {
+                                        data: {
+                                            label: stateLabel | trans,
+                                            status: state,
+                                        },
+                                    } only %}
+                                {% endif %}
+                            {% endblock %}
+
+                            {% block bundles %}
+                                {% include molecule('cart-bundle-list', 'ProductBundleWidget') ignore missing with {
+                                    data: {
+                                        items: embed.bundleItems,
+                                    },
+                                } only %}
+                            {% endblock %}
+                        {% endembed %}
+                    {% endif %}
+                {% endfor %}
+
+                {% widget 'OrderItemsConfiguredBundleWidget' args [shipmentGroup.items] only %}
+                {% endwidget %}
+            </div>
+
+            <div class="col col--sm-12 col--xl-4">
+                {% include molecule('summary-sidebar', 'CheckoutPage') ignore missing with {
+                    data: {
+                        shipment: shipmentGroup.shipment,
+                        isGiftCardExists: isGiftCardExists,
+                    },
+                } only %}
+            </div>
+        </article>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,53 @@
+@mixin catalog-page-filter-section($name: '.filter-section') {
+    $mobile-sort-and-button-max-height: rem(192);
+
+    #{$name} {
+        margin-top: rem(118);
+        padding: rem(10) rem(24) 0;
+        overflow-y: auto;
+        max-height: calc(100vh - #{$mobile-sort-and-button-max-height});
+
+        @include helper-breakpoint-media-min($xl-min) {
+            margin: 0;
+            padding: rem(15) 0 0;
+            overflow-y: visible;
+            max-height: none;
+            border-top: rem(1) dotted $setting-color-gray-3;
+        }
+
+        &__top-panel {
+            @include helper-breakpoint-media-max($lg-max) {
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                background-color: $setting-color-gray-1;
+                padding: rem(20) rem(24) rem(8);
+                min-height: rem(112);
+            }
+        }
+
+        &__top-panel-button {
+            @include helper-breakpoint-media-max($lg-max) {
+                position: absolute;
+                top: rem(24);
+                right: rem(24);
+            }
+        }
+
+        &__actions {
+            padding-top: rem(15);
+
+            @include helper-breakpoint-media-max($lg-max) {
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                right: 0;
+            }
+        }
+
+        @content;
+    }
+}
+
+@include catalog-page-filter-section();

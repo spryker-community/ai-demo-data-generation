@@ -1,0 +1,12 @@
+{% extends view('banner', '@SprykerShop:ContentBannerWidget') %}
+
+{% block body %}
+    {% embed molecule('banner-jumbotron', 'ContentBannerWidget') with {
+        data: {
+            banner: data.banner,
+            isBannerClickable: banner.clickUrl,
+        },
+    } only %}
+        {% block bannerTextPosition %}grid--bottom{% endblock %}
+    {% endembed %}
+{% endblock %}

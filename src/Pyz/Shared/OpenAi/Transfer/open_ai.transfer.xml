@@ -1,0 +1,210 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="OpenAiCreateResponse">
+        <property name="id" type="string"/>
+        <property name="object" type="string"/>
+        <property name="created" type="int"/>
+        <property name="model" type="string"/>
+        <property name="choices" type="array"/>
+        <property name="createResponseUsage" type="OpenAICreateResponseUsage"/>
+    </transfer>
+
+    <transfer name="OpenAiCreateResponseUsage">
+        <property name="promptTokens" type="int"/>
+        <property name="completionTokens" type="int"/>
+        <property name="totalTokens" type="int"/>
+    </transfer>
+
+    <transfer name="OpenAiTranscriptionResponse">
+        <property name="task" type="string"/>
+        <property name="language" type="string"/>
+        <property name="duration" type="string"/>
+        <property name="segments" type="array"/>
+        <property name="text" type="array"/>
+    </transfer>
+
+    <transfer name="OpenAiTranslationResponse">
+        <property name="task" type="string"/>
+        <property name="language" type="string"/>
+        <property name="duration" type="string"/>
+        <property name="segments" type="array"/>
+        <property name="text" type="array"/>
+    </transfer>
+
+    <transfer name="OpenAiEditsCreateResponse">
+        <property name="object" type="string"/>
+        <property name="created" type="int"/>
+        <property name="choices" type="array"/>
+        <property name="createResponseUsage" type="OpenAICreateResponseUsage"/>
+    </transfer>
+
+    <transfer name="OpenAiEmbeddingsCreateResponse">
+        <property name="object" type="string"/>
+        <property name="embeddings" type="array"/>
+        <property name="createResponseUsage" type="OpenAICreateResponseUsage"/>
+    </transfer>
+
+    <transfer name="OpenAiFilesListResponse">
+        <property name="object" type="string"/>
+        <property name="data" type="array"/>
+    </transfer>
+
+    <transfer name="OpenAiFilesDeleteResponse">
+        <property name="id" type="string"/>
+        <property name="object" type="string"/>
+        <property name="deleted" type="bool"/>
+    </transfer>
+
+    <transfer name="OpenAiFilesRetrieveResponse">
+        <property name="id" type="string"/>
+        <property name="object" type="string"/>
+        <property name="bytes" type="int"/>
+        <property name="createdAt" type="int"/>
+        <property name="filename" type="string"/>
+        <property name="purpose" type="string"/>
+        <property name="status" type="string"/>
+        <property name="statusDetails" type="string"/>
+        <property name="statusDetailsArray" type="array"/>
+    </transfer>
+
+    <transfer name="OpenAiFilesUploadResponse">
+        <property name="id" type="string"/>
+        <property name="object" type="string"/>
+        <property name="bytes" type="int"/>
+        <property name="createdAt" type="int"/>
+        <property name="filename" type="string"/>
+        <property name="purpose" type="string"/>
+        <property name="status" type="string"/>
+        <property name="statusDetails" type="string"/>
+        <property name="statusDetailsArray" type="array"/>
+    </transfer>
+
+    <transfer name="OpenAiFinetuneCreateResponse">
+        <property name="id" type="string"/>
+        <property name="object" type="string"/>
+        <property name="model" type="string"/>
+        <property name="createdAt" type="int"/>
+        <property name="events" type="array"/>
+        <property name="hyperparams" type="OpenAiFinetuneRetrieveResponseHyperparams"/>
+        <property name="organizationId" type="string"/>
+        <property name="resultFiles" type="array"/>
+        <property name="status" type="string"/>
+        <property name="validationFiles" type="array"/>
+        <property name="trainingFiles" type="array"/>
+        <property name="updatedAt" type="int"/>
+    </transfer>
+
+    <transfer name="OpenAiFinetuneRetrieveResponseHyperparams">
+        <property name="batchSize" type="int"/>
+        <property name="learningRateMultiplier" type="float"/>
+        <property name="nEpochs" type="int"/>
+        <property name="promptLossWeight" type="float"/>
+    </transfer>
+
+    <transfer name="OpenAiFinetuneListResponse">
+        <property name="object" type="string"/>
+        <property name="data" type="array"/>
+    </transfer>
+
+    <transfer name="OpenAiFinetuneRetrieveResponse">
+        <property name="id" type="string"/>
+        <property name="object" type="string"/>
+        <property name="model" type="string"/>
+        <property name="createdAt" type="int"/>
+        <property name="events" type="array"/>
+        <property name="hyperparams" type="OpenAiFinetuneRetrieveResponseHyperparams"/>
+        <property name="organizationId" type="string"/>
+        <property name="resultFiles" type="array"/>
+        <property name="status" type="string"/>
+        <property name="validationFiles" type="array"/>
+        <property name="trainingFiles" type="array"/>
+        <property name="updatedAt" type="int"/>
+    </transfer>
+
+    <transfer name="OpenAiFinetuneCancelResponse">
+        <property name="id" type="string"/>
+        <property name="object" type="string"/>
+        <property name="model" type="string"/>
+        <property name="createdAt" type="int"/>
+        <property name="events" type="array"/>
+        <property name="hyperparams" type="OpenAiFinetuneRetrieveResponseHyperparams"/>
+        <property name="organizationId" type="string"/>
+        <property name="resultFiles" type="array"/>
+        <property name="status" type="string"/>
+        <property name="validationFiles" type="array"/>
+        <property name="trainingFiles" type="array"/>
+        <property name="updatedAt" type="int"/>
+    </transfer>
+
+    <transfer name="OpenAiFinetuneListEventsResponse">
+        <property name="object" type="string"/>
+        <property name="data" type="array"/>
+    </transfer>
+
+    <transfer name="OpenAiModerationsCreateResponse">
+        <property name="id" type="string"/>
+        <property name="model" type="string"/>
+        <property name="results" type="array"/>
+    </transfer>
+
+    <transfer name="OpenAiImagesCreateResponse">
+        <property name="created" type="int"/>
+        <property name="data" type="array"/>
+    </transfer>
+
+    <transfer name="OpenAiImagesEditResponse">
+        <property name="created" type="int"/>
+        <property name="data" type="array"/>
+    </transfer>
+
+    <transfer name="OpenAiImagesVariationResponse">
+        <property name="created" type="int"/>
+        <property name="data" type="array"/>
+    </transfer>
+
+    <transfer name="OpenAiPrompt">
+        <property name="idOpenaiPrompt" type="int"/>
+        <property name="fkLocale" type="int"/>
+        <property name="locale" type="Locale"/>
+        <property name="name" type="string"/>
+        <property name="prompt" type="string"/>
+        <property name="model" type="string"/>
+        <property name="suffix" type="string"/>
+        <property name="maxTokens" type="int"/>
+        <property name="temperature" type="float"/>
+        <property name="topP" type="float"/>
+        <property name="nCompletions" type="float"/>
+        <property name="stream" type="bool"/>
+        <property name="logprobs" type="float"/>
+        <property name="echo" type="bool"/>
+        <property name="stop" type="string"/>
+        <property name="presencePenalty" type="float"/>
+        <property name="frequencyPenalty" type="float"/>
+        <property name="bestOf" type="int"/>
+        <property name="user" type="string"/>
+        <property name="createdAt" type="string"/>
+        <property name="updatedAt" type="string"/>
+    </transfer>
+
+    <transfer name="OpenAiPromptCriteria">
+        <property name="idOpenaiPrompt" type="int"/>
+    </transfer>
+
+    <transfer name="OpenAiAssignEventToPromptRequest">
+        <property name="prompt" type="int"/>
+        <property name="event" type="string"/>
+    </transfer>
+
+    <transfer name="OpenAiExecuteRequest">
+        <property name="event" type="string"/>
+        <property name="context" type="array"/>
+    </transfer>
+
+    <transfer name="OpenAiAssignEventToPrompt">
+        <property name="openAiPrompt" type="OpenAiPrompt"/>
+        <property name="event" type="string"/>
+    </transfer>
+</transfers>

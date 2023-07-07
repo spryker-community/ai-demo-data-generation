@@ -1,0 +1,54 @@
+{% extends template('widget') %}
+
+{% define data = {
+    productAbstractViewCollection: productAbstractViewCollection,
+} %}
+
+{% block body %}
+    <div class="grid grid--stretch">
+        {% for productAbstractView in data.productAbstractViewCollection %}
+            {% embed molecule('product-item') with {
+                class: 'col col--sm-6 col--lg-3',
+                data: {
+                    product: productAbstractView,
+                },
+            } only %}
+                {% block body %}
+                    <div class="{{ config.name }}__container {{ config.name }}__container--title-top">
+                        {% block content %}
+                            <a href="{{ data.url }}" class="{{ config.name }}__info {{ config.jsName }}__link-detail-page grid grid--justify grid--top grid--no-wrap">
+                                {% block name %}
+                                    <div class="col col--md-8 col--sm-12">
+                                        {{ block('title') }}
+                                    </div>
+                                {% endblock %}
+
+                                {% block price %}
+                                    <div class="col col--md-4 col--sm-12">
+                                        {% include molecule('money-price') with {
+                                            modifiers: ['align-right'],
+                                            data: {
+                                                amount: data.price,
+                                                originalAmount: data.originalPrice ?: null,
+                                                parentJsName: config.jsName,
+                                            },
+                                        } only %}
+                                    </div>
+                                {% endblock %}
+                            </a>
+
+                            <div class="{{ config.name }}__image-wrap">
+                                {{ block('image') }}
+                                {{ block('labels') }}
+                                {{ block('colors') }}
+                            </div>
+                        {% endblock %}
+
+                        {% block rating %}{% endblock %}
+                        {% block actionsContainer %}{% endblock %}
+                    </div>
+                {% endblock %}
+            {% endembed %}
+        {% endfor %}
+    </div>
+{% endblock %}

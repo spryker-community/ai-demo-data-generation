@@ -1,0 +1,24 @@
+includes:
+    - vendor/spryker-sdk/phpstan-spryker/extension.neon
+
+parameters:
+    excludePaths:
+        - %rootDir%/../../../src/Generated/*
+        - %rootDir%/../../../src/Orm/*
+
+    bootstrapFiles:
+        - %rootDir%/../../../phpstan-bootstrap.php
+
+    ignoreErrors:
+        - '#Call to an undefined method .+Criteria::.+\(\).#'
+
+    reportUnmatchedIgnoredErrors: false
+
+    dynamicConstantNames:
+        - APPLICATION
+        - APPLICATION_ENV
+        - APPLICATION_STORE
+        - APPLICATION_CODE_BUCKET
+
+    parallel:
+       maximumNumberOfProcesses: 1

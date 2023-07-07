@@ -1,0 +1,14 @@
+{% extends template('page-layout-wishlist', '@SprykerShop:WishlistPage') %}
+
+{% block customerNavigation %}
+    <div class="box">
+        {% widget 'CustomerNavigationWidget' args [data.activePage, data.activeWishlistId] only %}
+            {% block body %}
+                {% define data = {
+                    modifiers: ['customer-navigation'],
+                } %}
+                {{ parent() }}
+            {% endblock %}
+        {% endwidget %}
+    </div>
+{% endblock %}

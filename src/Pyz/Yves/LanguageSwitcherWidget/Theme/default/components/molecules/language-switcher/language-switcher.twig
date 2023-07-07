@@ -1,0 +1,43 @@
+{% extends model('component') %}
+
+{% define config = {
+    name: 'language-switcher',
+    tag: 'language-switcher'
+} %}
+
+{% define data = {
+    languages: required,
+    currentLanguage: required,
+    getSchemeAndHttpHost: app.request.getSchemeAndHttpHost(),
+    additionalModifiers: required,
+    additionalClassName: '',
+} %}
+
+{% block body %}
+    {% embed molecule('custom-select') with {
+        modifiers: data.additionalModifiers,
+        attributes: {
+            'config-theme': 'secondary',
+            'additional-class-name': data.additionalClassName,
+        },
+        embed: {
+            jsName: config.jsName ~ '__select',
+            languages: data.languages,
+            currentLanguage: data.currentLanguage,
+            getSchemeAndHttpHost: data.getSchemeAndHttpHost
+        }
+    } only %}
+        {% block selectClass %}
+            {{ parent() }} {{ embed.jsName }}
+        {% endblock %}
+        {% block options %}
+            {% for language, url in embed.languages %}
+                <option
+                        value="{{ embed.getSchemeAndHttpHost }}{{ url }}"
+                        {{ (language == embed.currentLanguage) ? 'selected' : ''}}>
+                    {{ language | upper }}
+                </option>
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

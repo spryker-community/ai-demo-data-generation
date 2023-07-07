@@ -1,0 +1,27 @@
+{% extends '@Gui/Layout/layout.twig' %}
+
+{% set widget_title = 'Delete OpenAI Prompt: %s' | format(openAi.idOpenaiPrompt) | trans %}
+
+{% block head_title %}
+    {{ widget_title }}
+{% endblock %}
+{% block section_title %}
+    {{ widget_title }}
+{% endblock %}
+
+{% block content %}
+    {% embed '@Gui/Partials/widget.twig' with { widget_title: 'Are you sure about deleting this OpenAI Prompt?' | trans } %}
+        {% block widget_content %}
+            <ul class="list-inline m-b-none">
+                <li>
+                    <a href="{{ app.request.headers.get('referer') }}" class="btn btn-primary">{{ 'No, I want to keep this OpenAI Prompt' | trans}}</a>
+                </li>
+                <li>
+                    {{ form_start(openAiForm) }}
+                    {{ form_widget(openAiForm.submit) }}
+                    {{ form_end(openAiForm) }}
+                </li>
+            </ul>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

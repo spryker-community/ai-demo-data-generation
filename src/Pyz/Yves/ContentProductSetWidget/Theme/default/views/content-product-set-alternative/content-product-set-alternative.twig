@@ -1,0 +1,81 @@
+{% extends view('content-product-set-alternative', '@SprykerShop:ContentProductSetWidget') %}
+
+{% block body %}
+    {% embed organism('product-set-cms-content', 'ProductSetWidget') ignore missing with {
+        data: {
+            products: data.products,
+            name: data.name,
+            description: data.description,
+            images: data.images,
+        },
+    } only %}
+        {% block body %}
+            {% block header %}
+                {% block title %}
+                    {{ parent() }}
+                {% endblock %}
+
+                {% block description %}
+                    {% if data.description %}
+                        <p>{{ data.description }}</p>
+                    {% endif %}
+                {% endblock %}
+            {% endblock %}
+
+            <div class="grid grid--stretch">
+                <div class="col col--sm-12 col--lg-5 product-set-slider product-set-slider--single">
+                    {% block carousel %}
+                        {% embed molecule('slick-carousel') with {
+                            data: {
+                                slides: data.images,
+                            },
+                            attributes: {
+                                'data-json': '{
+                                    "slidesToShow": 1,
+                                    "dots": true,
+                                    "arrows": false
+                                }',
+                            },
+                            modifiers: ['product-set'],
+                        } only %}
+                            {% block slides %}
+                                {% for slide in data.slides %}
+                                    {% include molecule('lazy-image') with {
+                                        modifiers: ['thumbnail', 'spaceless', 'product-set'],
+                                        data: {
+                                            imageSrc: slide.externalUrlLarge,
+                                            extraAttributes: {
+                                                itemprop: 'image',
+                                            },
+                                        },
+                                    } only %}
+                                {% endfor %}
+                            {% endblock %}
+                        {% endembed %}
+                    {% endblock %}
+                </div>
+                <div class="col col--sm-12 col--lg-7 product-set-slider product-set-slider--hide-prev-btn product-set-slider--multiple">
+                    {% block productSet %}
+                        <form method="GET">
+                            {% include molecule('product-set-slider', 'ProductSetWidget') with {
+                                data: {
+                                    products: data.products,
+                                    sliderConfig: data.sliderConfig,
+                                },
+                            } only %}
+                        </form>
+                    {% endblock %}
+                </div>
+            </div>
+
+            <div class="grid grid--center">
+                <div class="col">
+                    {% set generalAddToCartButtonClass = '' %}
+
+                    {{ block('generalAddToCart') }}
+                </div>
+            </div>
+            <hr>
+        {% endblock %}
+    {% endembed %}
+{% endblock %}

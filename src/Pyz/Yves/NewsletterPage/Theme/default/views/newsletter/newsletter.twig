@@ -1,0 +1,24 @@
+{% extends view('newsletter', '@SprykerShop:NewsletterPage') %}
+
+{% block customerContent %}
+    <div class="box">
+        {% include molecule('title-box', 'CustomerPage') with {
+            data: {
+                title: 'customer.newsletter.subscription' | trans,
+            },
+        } only %}
+
+        <p>{{ 'account.newsletter.text' | trans }}</p>
+
+    </div>
+    <div class="box">
+        {% include molecule('customer-form', 'CustomerPage') with {
+            data: {
+                form: data.form,
+                submit: {
+                    enable: true,
+                },
+            },
+        } only %}
+    </div>
+{% endblock %}

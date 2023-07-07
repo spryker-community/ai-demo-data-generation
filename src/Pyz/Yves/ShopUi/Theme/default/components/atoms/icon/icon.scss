@@ -1,0 +1,143 @@
+@include shop-ui-icon {
+    &--inherit {
+        display: block;
+        width: inherit;
+        height: inherit;
+    }
+
+    &--medium {
+        width: rem(10);
+        height: rem(10);
+    }
+
+    &--medium-up {
+        width: rem(18);
+        height: rem(18);
+    }
+
+    &--close-filter {
+        position: absolute;
+        right: rem(10);
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    &--secondary {
+        width: rem(12);
+        height: rem(12);
+    }
+
+    &--thumbnail-arrow {
+        display: block;
+        width: 100%;
+        height: rem(6);
+        color: $setting-color-black;
+    }
+
+    &--reverse {
+        transform: rotate(180deg);
+    }
+
+    &--checkout-success {
+        margin-top: rem(-2);
+    }
+
+    &--to-cart {
+        margin-top: rem(-1);
+    }
+
+    &--visa {
+        width: rem(32);
+        height: rem(10);
+    }
+
+    &--mastercard {
+        width: rem(26);
+        height: rem(20);
+    }
+
+    &--paypal {
+        width: rem(41);
+        height: rem(11);
+    }
+
+    &--klarna {
+        width: rem(40);
+        height: rem(11);
+    }
+
+    &--dhl {
+        width: rem(64);
+        height: rem(8);
+    }
+
+    &--hermes {
+        width: rem(68);
+        height: rem(9);
+    }
+
+    &--arrow {
+        width: rem(11);
+        height: rem(11);
+        color: $setting-color-black;
+
+        @include helper-breakpoint-media-min($xl-min) {
+            width: rem(12);
+            height: rem(12);
+        }
+    }
+
+    &--send {
+        width: rem(6);
+        height: rem(9);
+    }
+
+    &--grid {
+        stroke: currentColor;
+    }
+
+    &--panel-info {
+        width: rem(12);
+        height: rem(9);
+        margin-right: rem(8);
+    }
+
+    &--side-drawer-arrow {
+        width: rem(6);
+        height: rem(12);
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &--user-side-drawer {
+        display: block;
+        width: rem(23);
+        height: rem(20);
+        margin: 0 rem(16) 0 rem(14);
+    }
+
+    &--progress-check {
+        height: rem(12);
+        width: rem(12);
+        vertical-align: baseline;
+        stroke: $setting-color-main;
+    }
+
+    &--cart-plus {
+        height: rem(23);
+        width: rem(26);
+    }
+
+    &--hermes-logo,
+    &--dhl-logo {
+        width: rem(73);
+    }
+
+    &--small-button {
+        width: rem(22);
+        height: rem(22);
+        margin-right: rem(5);
+    }
+}
