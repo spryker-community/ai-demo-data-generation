@@ -13,13 +13,13 @@
     - seo description
 
 # Screenshots
-![2023-05-12_12-44.png](2023-05-12_12-44.png)
-![2023-05-12_12-45.png](2023-05-12_12-45.png)
-![2023-05-12_12-45_1.png](2023-05-12_12-45_1.png)
-![2023-05-12_12-47.png](2023-05-12_12-47.png)
-![2023-05-12_12-48.png](2023-05-12_12-48.png)
-![2023-05-12_17-30.png](2023-05-12_17-30.png)
--
+![1.png](1.png)
+![2.png](2.png)
+![3.png](3.png)
+![4.png](4.png)
+![5.png](5.png)
+![6.png](6.png)
+
 # Example usage
 - use this snipped to upgrade backoffice inputs to openai inputs (also see `Zed/OpenAi/assets/Zed/js/modules/openai.js:4`)
  ```javascript
