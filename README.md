@@ -1,178 +1,84 @@
-# Spryker B2C Demo Shop
+# Open AI Spryker package
 [![Build Status](https://github.com/spryker-shop/b2c-demo-shop/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/spryker-shop/b2c-demo-shop/actions?query=branch:master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/spryker-shop/b2c-demo-shop/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/spryker-shop/b2c-demo-shop/?branch=master)
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.0-8892BF.svg)](https://php.net/)
 
-## Description
+# Description
+- OpenAI Client for spryker
+- BO UI to manage prompts
+- BO UI to generate prompts for:
+    - product descriptions
+    - seo title
+    - seo keywords
+    - seo description
 
-Spryker B2C Demo Shop is a collection of Spryker B2C-specific features. It suits most projects as a starting point of development and can be used to explore Spryker.
-
-## B2C Demo Shop quick start
-
-This section describes how to get started with the B2C Demo Shop quickly.
-
-For detailed installation instructions, see [Installing Spryker with Docker](https://docs.spryker.com/docs/installing-spryker-with-docker) or [Installing with Development Virtual Machine](https://docs.spryker.com/docs/dev-getting-started#installing-spryker-with-development-virtual-machine).
-
-### Prerequisites
-
-For full installation prerequisites, see one of the following:
-* [Installing Docker prerequisites on MacOS](https://docs.spryker.com/docs/installing-docker-prerequisites-on-macos)
-* [Installing Docker prerequisites on Linux](https://docs.spryker.com/docs/installing-docker-prerequisites-on-linux)
-* [Installing Docker prerequisites on Windows](https://docs.spryker.com/docs/installing-docker-prerequisites-on-windows)
-
-Recommended system requirements for MacOS:
-
-|Macbook type	|vCPU	|RAM|
-|---|---|---|
-|15'|	4	|6GB|
-|13'|	2	|4GB|
-
-### Installing the B2C Demo Shop
-
-To install the B2C Demo Shop:
-
-1. Create a project folder and clone the B2C Demo Shop and the Docker SDK:
-```bash
-mkdir spryker-b2c && cd spryker-b2c
-git clone https://github.com/spryker-shop/b2c-demo-shop.git ./
-git clone git@github.com:spryker/docker-sdk.git docker
-```
-
-2. Set up a desired environment:
-  * [Setting up a development environment](#setting-up-a-development-environment)
-  * [Setting up a production-like environment](#setting-up-a-production-like-environment)
-
-#### Setting up a development environment
-
-To set up a development environment:
-
-1. Bootstrap the docker setup:
-
-```bash
-docker/sdk boot deploy.dev.yml
-```
-
-2. If the command you've run in the previous step returned instructions, follow them.
-
-3. Build and start the instance:
-```bash
-docker/sdk up
-```
-
-4. Switch to your branch, re-build the application with assets and demo data from the new branch:
-
-```bash
-git checkout {your_branch}
-docker/sdk boot -s deploy.dev.yml
-docker/sdk up --build --assets --data
-```
-
-> Depending on your requirements, you can select any combination of the following `up` command attributes. To fetch all the changes from the branch you switch to, we recommend running the command with all of them:
-> - `--build` - update composer, generate transfer objects, etc.
-> - `--assets` - build assets
-> - `--data` - get new demo data
-
-You've set up your Spryker B2C Demo Shop and can access your applications.
+# Screenshots
+![2023-05-12_12-44.png](2023-05-12_12-44.png)
+![2023-05-12_12-45.png](2023-05-12_12-45.png)
+![2023-05-12_12-45_1.png](2023-05-12_12-45_1.png)
+![2023-05-12_12-47.png](2023-05-12_12-47.png)
+![2023-05-12_12-48.png](2023-05-12_12-48.png)
+![2023-05-12_17-30.png](2023-05-12_17-30.png)
+-
+# Example usage
+- use this snipped to upgrade backoffice inputs to openai inputs (also see `Zed/OpenAi/assets/Zed/js/modules/openai.js:4`)
+ ```javascript
+ attachOpenAiCompletionApiToToForm('textarea[name*="description"]', function(event, languageContext) {
+  let nameInput = $('input[name*="'+languageContext+'][name"]');
+  let skuInput = $('input[name*="'+languageContext+'][sku"]');
+  return {title: nameInput.value, sku: skuInput.value};
+ });
+ ```
 
 
-### Setting up a production-like environment
+- https://gitlab.nxs360.com/packages/php/spryker/open-ai/-/blob/main/src/ValanticSpryker/Zed/OpenAi/Communication/Console/OpenAiConsole.php#L39
+- https://github.com/openai-php/client
 
-To set up a production-like environment:
+# Install
+- composer require the package `composer req valantic-spryker/open-ai:^1.0.4` (see https://gitlab.nxs360.com/groups/packages/php/spryker/-/packages)
+- add `'ValanticSpryker'` as first element to your `$config[KernelConstants::CORE_NAMESPACES]`
+- configure your openai key in your config `$config[OpenAiConstants::OPENAI_API_KEY] = 'xxxxxx';` (https://platform.openai.com/account/api-keys)
+- `console propel:install`
+- `console transfer:generate`
+- load open-ai js in your backoffice twig (see `Zed/Gui/Presentation/Layout/layout.twig:5`)
+- `console twig:cache:warmer`
+- add to your projects backoffice navigation.xml (see `src/config/Zed/navigation.xml:370`)
+- `console navigation:build-cache`
+- `console router:cache:warm-up:backoffice`
+- add `path.resolve('./vendor/valantic-spryker/')` to your JS webpack build dirs `frontend/zed/build.js:11`
+- build frontend (`npm run zed`)
 
-1. Bootstrap the docker setup:
+# Reference implementation
+- https://backoffice-de-demo.vcec.cloud/
 
-```bash
-docker/sdk boot -s
-```
+# HowTos Cli
 
-2. If the command you've run in the previous step returned instructions, follow them.
+PHP Container: `docker run -it --rm --name my-running-script -v "$PWD":/data spryker/php:latest bash`
 
-3. Build and start the instance:
-```bash
-docker/sdk up
-```
+Run Tests: `codecept run --env standalone`
 
-4. Switch to your branch in one of the following ways:
+Fixer: `vendor/bin/phpcbf --standard=phpcs.xml --report=full src/ValanticSpryker/`
 
-  * Switch to your brunch, re-build the application with assets and demo data from the new branch:
+Disable opcache: `mv /usr/local/etc/php/conf.d/docker-php-ext-opcache.ini /usr/local/etc/php/conf.d/docker-php-ext-opcache.iniold`
 
-  ```bash
-  git checkout {your_branch}
-  docker/sdk boot -s
-  docker/sdk up --assets --data
-  ```
+XDEBUG:
+- `ip addr | grep '192.'`
+- `$docker-php-ext-enable xdebug`
+- configure phpstorm (add 127.0.0.1 phpstorm server with name valantic)
+- `$PHP_IDE_CONFIG=serverName=valantic php -dxdebug.mode=debug -dxdebug.client_host=192.168.87.39 -dxdebug.start_with_request=yes ./vendor/bin/codecept run --env standalone`
 
-  * Light git checkout:
+- Run Tests with coverage: `XDEBUG_MODE=coverage vendor/bin/codecept run --env standalone --coverage --coverage-xml --coverage-html`
 
-  ```bash
-  git checkout {your_branch}
-  docker/sdk boot -s
+# use nodejs
+- docker run -it --rm --name my-running-script -v "$PWD":/data node:18 bash
 
-  docker/sdk up
-  ```
-
-  > Depending on your requirements, you can select any combination of the following `up` command attributes. To fetch all the changes from the branch you switch to, we recommend running the command with all of them:
-  > - `--build` - update composer, generate transfer objects, etc.
-  > - `--assets` - build assets
-  > - `--data` - get new demo data
-
-5. Reload all the data:
-
-```bash
-docker/sdk clean-data && docker/sdk up && docker/sdk console q:w:s -v -s
-```
-
-
-You've set up your Spryker B2C Demo Shop and can access your applications.
-
-## Troubleshooting installation of the B2C Demo Shop
-
-This section describes the most common issues related to the installation of the B2C Demo Shop.
-
-For a complete troubleshooting, see [Troubleshooting Spryker in Docker issues](https://docs.spryker.com/docs/troubleshooting-spryker-in-docker-issues).
-
-**when**
-
-You get unexpected application behavior or errors.
-
-**then**
-
-1. Check the state of the directory:
-```bash
-git status
-```
-
-2. If there are untracked files (returned in red), and they are not necessary, remove them.
-
-3. Restart file synchronization and rebuild the codebase:
-```bash
-docker/sdk trouble
-docker/sdk boot -s deploy.dev.yml
-docker/sdk up --build --assets
-```
-
-**when**
-You do not see the expected demo data on the Storefront.
-
-**then**
-
-1. Open the [queue broker](http://queue.spryker.local) and wait until all the queues are empty.
-
-2. If the queues are empty, and the issue persists, reload the demo data:
-```bash
-docker/sdk trouble
-docker/sdk boot -s deploy.dev.yml
-docker/sdk up --build --assets --data
-```
-
-## Installation of B2C Demo Shop with Docker
-
-For detailed installation instructions of Spryker with Docker, see [Installing Spryker with Docker](https://docs.spryker.com/docs/installing-spryker-with-docker).
-
-## Glue API reference
-
-See Glue API reference at [REST API reference](https://docs.spryker.com/docs/rest-api-reference#/rest-api-reference).
-
-## Contributing to the repository
-
-For contribution guidelines, see [Code contribution guide](https://docs.spryker.com/docs/code-contribution-guide#code-contribution-guide).
+ToDo:
+- add list with useful prompts
+- refactor UI to native web components
+- add importer for demo prompts
+- add twig example
+- add generate product button
+- add generate customer button
+- add generate cms page button
+- add generate cms seo texts buttons
+- add more context to generate button (i.e. price, category, attributes)
