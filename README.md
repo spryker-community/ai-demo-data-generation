@@ -30,45 +30,11 @@
  });
  ```
 
-
-- https://gitlab.nxs360.com/packages/php/spryker/open-ai/-/blob/main/src/ValanticSpryker/Zed/OpenAi/Communication/Console/OpenAiConsole.php#L39
-- https://github.com/openai-php/client
-
-# Install
-- composer require the package `composer req valantic-spryker/open-ai:^1.0.4` (see https://gitlab.nxs360.com/groups/packages/php/spryker/-/packages)
-- add `'ValanticSpryker'` as first element to your `$config[KernelConstants::CORE_NAMESPACES]`
-- configure your openai key in your config `$config[OpenAiConstants::OPENAI_API_KEY] = 'xxxxxx';` (https://platform.openai.com/account/api-keys)
-- `console propel:install`
-- `console transfer:generate`
-- load open-ai js in your backoffice twig (see `Zed/Gui/Presentation/Layout/layout.twig:5`)
-- `console twig:cache:warmer`
-- add to your projects backoffice navigation.xml (see `src/config/Zed/navigation.xml:370`)
-- `console navigation:build-cache`
-- `console router:cache:warm-up:backoffice`
-- add `path.resolve('./vendor/valantic-spryker/')` to your JS webpack build dirs `frontend/zed/build.js:11`
-- build frontend (`npm run zed`)
-
-# Reference implementation
-- https://backoffice-de-demo.vcec.cloud/
-
 # HowTos Cli
  - docker/sdk up
-
-# use nodejs
-- docker run -it --rm --name my-running-script -v "$PWD":/data node:18 bash
-
-ToDo:
-- add list with useful prompts
-- refactor UI to native web components
-- add importer for demo prompts
-- add twig example
-- add generate product button
-- add generate customer button
-- add generate cms page button
-- add generate cms seo texts buttons
-- add more context to generate button (i.e. price, category, attributes)
 
 ToDo:
  - prompt importer
  - cms page generate button
  - tests
+ - refactor
