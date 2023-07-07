@@ -1,11 +1,13 @@
 <?php
 
-namespace Pyz\Zed\DataImport\Business\Model\Customer;
+/**
+ * This file is part of the Spryker Commerce OS.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
+ */
 
-use Orm\Zed\Customer\Persistence\SpyCustomerQuery;
-use Orm\Zed\SequenceNumber\Persistence\SpySequenceNumberQuery;
-use Pyz\Zed\DataImport\Business\Exception\InvalidDataException;
-use Spryker\Shared\Customer\CustomerConstants;
+namespace Pyz\Zed\DataImport\Business\Model\OpenAi;
+
+use Orm\Zed\OpenAi\Persistence\VsyOpenaiPromptQuery;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 
@@ -14,7 +16,22 @@ class OpenAiWriterStep implements DataImportStepInterface
     /**
      * @var string
      */
-    public const COL_CUSTOMER_REFERENCE = 'customer_reference';
+    public const COL_NAME = 'name';
+    public const COL_PROMPT = 'prompt';
+    public const COL_MODEL = 'model';
+    public const COL_SUFFIX = 'suffix';
+    public const COL_MAX_TOKENS = 'max_tokens';
+    public const COL_TEMPERATURE = 'temperature';
+    public const COL_TOPP = 'topp';
+    public const COL_NCOMPLETIONS = 'ncompletions';
+    public const COL_LOG_PROBS = 'log_probs';
+    public const COL_STOP = 'stop';
+    public const COL_PRESENCEPENALITY = 'presencepenality';
+    public const COL_FREQUENCYPENALTY = 'frequencypenalty';
+    public const COL_BESTOF = 'bestof';
+    public const COL_USER = 'user';
+    public const COL_ECHO = 'echo';
+    public const COL_STREAM = 'stream';
 
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
@@ -23,40 +40,11 @@ class OpenAiWriterStep implements DataImportStepInterface
      */
     public function execute(DataSetInterface $dataSet): void
     {
-        $customerEntity = SpyCustomerQuery::create()
-            ->filterByCustomerReference($dataSet[self::COL_CUSTOMER_REFERENCE])
+        $customerEntity = VsyOpenaiPromptQuery::create()
+            ->filterByName($dataSet[self::COL_NAME])
             ->findOneOrCreate();
 
         $customerEntity->fromArray($dataSet->getArrayCopy());
         $customerEntity->save();
-
-        $sequenceNumberEntity = SpySequenceNumberQuery::create()
-            ->filterByName(CustomerConstants::NAME_CUSTOMER_REFERENCE)
-            ->findOneOrCreate();
-
-        $currentId = $this->getCurrentId($dataSet);
-        if ($currentId > $sequenceNumberEntity->getCurrentId()) {
-            $sequenceNumberEntity->setCurrentId($currentId);
-            $sequenceNumberEntity->save();
-        }
-    }
-
-    /**
-     * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
-     *
-     * @throws \Pyz\Zed\DataImport\Business\Exception\InvalidDataException
-     *
-     * @return int
-     */
-    protected function getCurrentId(DataSetInterface $dataSet): int
-    {
-        if (!preg_match('/(\d+)$/', preg_quote($dataSet[self::COL_CUSTOMER_REFERENCE], '/'), $matches)) {
-            throw new InvalidDataException(sprintf(
-                'Invalid customer reference: "%s". Value expected to end with a number.',
-                preg_quote($dataSet[self::COL_CUSTOMER_REFERENCE], '/'),
-            ));
-        }
-
-        return (int)$matches[1];
     }
 }

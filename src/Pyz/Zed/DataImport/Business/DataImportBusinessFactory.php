@@ -39,7 +39,6 @@ use Pyz\Zed\DataImport\Business\Model\Country\Repository\CountryRepository;
 use Pyz\Zed\DataImport\Business\Model\Country\Repository\CountryRepositoryInterface;
 use Pyz\Zed\DataImport\Business\Model\Currency\CurrencyWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Customer\CustomerWriterStep;
-use Pyz\Zed\DataImport\Business\Model\Customer\OpenAiWriterStep;
 use Pyz\Zed\DataImport\Business\Model\DataImporterConditional;
 use Pyz\Zed\DataImport\Business\Model\DataImporterDataSetWriterAwareConditional;
 use Pyz\Zed\DataImport\Business\Model\DataSet\DataSetConditionInterface;
@@ -58,6 +57,7 @@ use Pyz\Zed\DataImport\Business\Model\Navigation\NavigationKeyToIdNavigationStep
 use Pyz\Zed\DataImport\Business\Model\Navigation\NavigationWriterStep;
 use Pyz\Zed\DataImport\Business\Model\NavigationNode\NavigationNodeValidityDatesStep;
 use Pyz\Zed\DataImport\Business\Model\NavigationNode\NavigationNodeWriterStep;
+use Pyz\Zed\DataImport\Business\Model\OpenAi\OpenAiWriterStep;
 use Pyz\Zed\DataImport\Business\Model\Product\AttributesExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\Product\ProductLocalizedAttributesExtractorStep;
 use Pyz\Zed\DataImport\Business\Model\Product\Repository\ProductRepository;
