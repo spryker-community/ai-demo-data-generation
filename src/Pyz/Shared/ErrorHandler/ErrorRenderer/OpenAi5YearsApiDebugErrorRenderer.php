@@ -41,7 +41,6 @@ class OpenAi5YearsApiDebugErrorRenderer implements ErrorRendererInterface
                     'messages' => [
                         ['role' => 'user', 'content' => $errorPromptEvent. ' Exception: '.json_encode($errorMessage). ' Code:' . $cleanedContent],
                     ],
-                    'max_tokens' => 1000,
                     'temperature' => 1,
                     'top_p' => 1,
                     'n' => 1,
