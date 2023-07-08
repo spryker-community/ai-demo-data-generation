@@ -1,7 +1,5 @@
 # Open AI Spryker package
-[![Build Status](https://github.com/spryker-shop/b2c-demo-shop/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/spryker-shop/b2c-demo-shop/actions?query=branch:master)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/spryker-shop/b2c-demo-shop/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/spryker-shop/b2c-demo-shop/?branch=master)
-[![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.0-8892BF.svg)](https://php.net/)
+![qr-code.png](qr-code.png)
 
 # Description
 - OpenAI Client for spryker
@@ -36,9 +34,3 @@
 
 # HowTos Cli
  - docker/sdk up
-
-ToDo:
- - prompt importer
- - cms page generate button
- - tests
- - refactor
