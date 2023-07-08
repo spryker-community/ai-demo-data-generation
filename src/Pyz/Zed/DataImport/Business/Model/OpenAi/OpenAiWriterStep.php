@@ -8,6 +8,7 @@
 namespace Pyz\Zed\DataImport\Business\Model\OpenAi;
 
 use Orm\Zed\OpenAi\Persistence\VsyOpenaiPromptQuery;
+use Orm\Zed\OpenAi\Persistence\VsyOpenaiPromptToEventQuery;
 use Spryker\Zed\DataImport\Business\Model\DataImportStep\DataImportStepInterface;
 use Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface;
 
@@ -17,21 +18,7 @@ class OpenAiWriterStep implements DataImportStepInterface
      * @var string
      */
     public const COL_NAME = 'name';
-    public const COL_PROMPT = 'prompt';
-    public const COL_MODEL = 'model';
-    public const COL_SUFFIX = 'suffix';
-    public const COL_MAX_TOKENS = 'max_tokens';
-    public const COL_TEMPERATURE = 'temperature';
-    public const COL_TOPP = 'topp';
-    public const COL_NCOMPLETIONS = 'ncompletions';
-    public const COL_LOG_PROBS = 'log_probs';
-    public const COL_STOP = 'stop';
-    public const COL_PRESENCEPENALITY = 'presencepenality';
-    public const COL_FREQUENCYPENALTY = 'frequencypenalty';
-    public const COL_BESTOF = 'bestof';
-    public const COL_USER = 'user';
-    public const COL_ECHO = 'echo';
-    public const COL_STREAM = 'stream';
+    public const COL_EVENT = 'event';
 
     /**
      * @param \Spryker\Zed\DataImport\Business\Model\DataSet\DataSetInterface $dataSet
@@ -40,11 +27,27 @@ class OpenAiWriterStep implements DataImportStepInterface
      */
     public function execute(DataSetInterface $dataSet): void
     {
-        $customerEntity = VsyOpenaiPromptQuery::create()
+        $vsyOpenAiPromptEntity = VsyOpenaiPromptQuery::create()
             ->filterByName($dataSet[self::COL_NAME])
             ->findOneOrCreate();
 
-        $customerEntity->fromArray($dataSet->getArrayCopy());
-        $customerEntity->save();
+        $event = $dataSet[self::COL_EVENT];
+        unset($dataSet[self::COL_EVENT]);
+
+
+        $vsyOpenAiPromptEntity->fromArray($dataSet->getArrayCopy());
+        $vsyOpenAiPromptEntity->save();
+
+
+        if (!empty($event)) {
+            $openAiEventEntity = VsyOpenaiPromptToEventQuery::create()
+                ->filterByEvent($event)
+                ->findOneOrCreate();
+
+            $openAiEventEntity->setEvent($event);
+            $vsyOpenAiPromptEntity->reload();
+            $openAiEventEntity->setFkOpenaiPrompt($vsyOpenAiPromptEntity->getIdOpenaiPrompt());
+            $openAiEventEntity->save();
+        }
     }
 }
