@@ -1,6 +1,9 @@
 # Open AI Spryker package
 ![qr-code.png](qr-code.png)
 
+# setup
+ - configure $config[OpenAiConstants::OPENAI_API_KEY] in your config_local.php (you get it from https://platform.openai.com/account/api-keys)
+
 # Description
 - OpenAI Client for spryker
 - BO UI to manage prompts
@@ -34,3 +37,7 @@
 
 # HowTos Cli
  - docker/sdk up
+
+# Roadmap
+ - Workflow Builder UI (Database Model for this OpenAI contains an event system - that is used to trigger a prompt -> see table vsy_openai_prompt_to_event)
+   - Inject a prompt through predefined EventFacade trigger Events i.e. ProductCreated, CustomerCreated, CategoryCreated and map Transfer field to prompt response
