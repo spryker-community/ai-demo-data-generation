@@ -1,10 +1,12 @@
 <!--
---- Readme.md Snippet without images Start ---
+&lt;--- Readme.md Snippet without images Start ---&gt;
 ## Tech Stack
 spryker-community/open-ai is built on the following main stack:
+
 - [New Relic](http://newrelic.com) – Performance Monitoring
 - [PHP](http://www.php.net/) – Languages
 - [jQuery](http://jquery.com/) – Javascript UI Libraries
+- [Sass](http://sass-lang.com/) – CSS Pre-processors / Extensions
 - [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) – Languages
 - [TypeScript](http://www.typescriptlang.org) – Languages
 - [PHPUnit](https://phpunit.de/) – Testing Frameworks
@@ -17,19 +19,23 @@ spryker-community/open-ai is built on the following main stack:
 - [Stylelint](http://stylelint.io/) – Code Review
 - [TSLint](https://github.com/palantir/tslint) – Code Review
 - [Prettier](https://prettier.io/) – Code Review
+- [Select2](https://select2.github.io/) – Javascript UI Libraries
 - [css-loader](https://github.com/webpack-contrib/css-loader) – CSS Pre-processors / Extensions
 - [PHPStan](https://github.com/phpstan/phpstan) – Code Review
 - [GitHub Actions](https://github.com/features/actions) – Continuous Integration
 
 Full tech stack [here](/techstack.md)
---- Readme.md Snippet without images End ---
 
---- Readme.md Snippet with images Start ---
+&lt;--- Readme.md Snippet without images End ---&gt;
+
+&lt;--- Readme.md Snippet with images Start ---&gt;
 ## Tech Stack
 spryker-community/open-ai is built on the following main stack:
+
 - <img width='25' height='25' src='https://img.stackshare.io/service/103/default_193410db3a7e419c7b436961bf41d733c7346b59.png' alt='New Relic'/> [New Relic](http://newrelic.com) – Performance Monitoring
 - <img width='25' height='25' src='https://img.stackshare.io/service/991/hwUcGZ41_400x400.jpg' alt='PHP'/> [PHP](http://www.php.net/) – Languages
 - <img width='25' height='25' src='https://img.stackshare.io/service/1021/lxEKmMnB_400x400.jpg' alt='jQuery'/> [jQuery](http://jquery.com/) – Javascript UI Libraries
+- <img width='25' height='25' src='https://img.stackshare.io/service/1171/jCR2zNJV.png' alt='Sass'/> [Sass](http://sass-lang.com/) – CSS Pre-processors / Extensions
 - <img width='25' height='25' src='https://img.stackshare.io/service/1209/javascript.jpeg' alt='JavaScript'/> [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) – Languages
 - <img width='25' height='25' src='https://img.stackshare.io/service/1612/bynNY5dJ.jpg' alt='TypeScript'/> [TypeScript](http://www.typescriptlang.org) – Languages
 - <img width='25' height='25' src='https://img.stackshare.io/service/1616/1_WsEnddd5Y4EgEHsT054kUQ.jpeg' alt='PHPUnit'/> [PHPUnit](https://phpunit.de/) – Testing Frameworks
@@ -42,19 +48,21 @@ spryker-community/open-ai is built on the following main stack:
 - <img width='25' height='25' src='https://img.stackshare.io/service/5446/V9JsvPul_400x400.jpg' alt='Stylelint'/> [Stylelint](http://stylelint.io/) – Code Review
 - <img width='25' height='25' src='https://img.stackshare.io/service/5561/303157.png' alt='TSLint'/> [TSLint](https://github.com/palantir/tslint) – Code Review
 - <img width='25' height='25' src='https://img.stackshare.io/service/7035/default_66f265943abed56bcdbfca1c866a4261b1fbb063.jpg' alt='Prettier'/> [Prettier](https://prettier.io/) – Code Review
+- <img width='25' height='25' src='https://img.stackshare.io/service/7488/select2.png' alt='Select2'/> [Select2](https://select2.github.io/) – Javascript UI Libraries
 - <img width='25' height='25' src='https://img.stackshare.io/service/8074/default_d2b16fd6997fb2e164de645a34f9b8d5a880d999.png' alt='css-loader'/> [css-loader](https://github.com/webpack-contrib/css-loader) – CSS Pre-processors / Extensions
 - <img width='25' height='25' src='https://img.stackshare.io/service/8333/phpst.png' alt='PHPStan'/> [PHPStan](https://github.com/phpstan/phpstan) – Code Review
 - <img width='25' height='25' src='https://img.stackshare.io/service/11563/actions.png' alt='GitHub Actions'/> [GitHub Actions](https://github.com/features/actions) – Continuous Integration
 
 Full tech stack [here](/techstack.md)
---- Readme.md Snippet with images End ---
+
+&lt;--- Readme.md Snippet with images End ---&gt;
 -->
 <div align="center">
 
 # Tech Stack File
 ![](https://img.stackshare.io/repo.svg "repo") [spryker-community/open-ai](https://github.com/spryker-community/open-ai)![](https://img.stackshare.io/public_badge.svg "public")
 <br/><br/>
-|44<br/>Tools used|11/09/23 <br/>Report generated|
+|53<br/>Tools used|01/05/24 <br/>Report generated|
 |------|------|
 </div>
 
@@ -87,7 +95,7 @@ Full tech stack [here](/techstack.md)
 </tr>
 </table>
 
-## <img src='https://img.stackshare.io/frameworks.svg'/> Frameworks (3)
+## <img src='https://img.stackshare.io/frameworks.svg'/> Frameworks (5)
 <table><tr>
   <td align='center'>
   <img width='36' height='36' src='https://img.stackshare.io/service/2202/72d087642cfce6fef6f2dabec5bf49e8_400x400.png' alt='Autoprefixer'>
@@ -95,6 +103,22 @@ Full tech stack [here](/techstack.md)
   <sub><a href="https://github.com/postcss/autoprefixer">Autoprefixer</a></sub>
   <br>
   <sub></sub>
+</td>
+
+<td align='center'>
+  <img width='36' height='36' src='https://img.stackshare.io/service/1171/jCR2zNJV.png' alt='Sass'>
+  <br>
+  <sub><a href="http://sass-lang.com/">Sass</a></sub>
+  <br>
+  <sub></sub>
+</td>
+
+<td align='center'>
+  <img width='36' height='36' src='https://img.stackshare.io/service/7488/select2.png' alt='Select2'>
+  <br>
+  <sub><a href="https://select2.github.io/">Select2</a></sub>
+  <br>
+  <sub>v4.0.13</sub>
 </td>
 
 <td align='center'>
@@ -227,9 +251,17 @@ Full tech stack [here](/techstack.md)
 </tr>
 </table>
 
-## Other (1)
+## Other (2)
 <table><tr>
   <td align='center'>
+  <img width='36' height='36' src='https://img.stackshare.io/service/2270/no-img-open-source.png' alt='HTML'>
+  <br>
+  <sub><a href="http://">HTML</a></sub>
+  <br>
+  <sub></sub>
+</td>
+
+<td align='center'>
   <img width='36' height='36' src='https://img.stackshare.io/service/4631/default_c2062d40130562bdc836c13dbca02d318205a962.png' alt='Shell'>
   <br>
   <sub><a href="https://en.wikipedia.org/wiki/Shell_script">Shell</a></sub>
@@ -241,9 +273,9 @@ Full tech stack [here](/techstack.md)
 </table>
 
 
-## <img src='https://img.stackshare.io/group.svg' /> Open source packages (24)</h2>
+## <img src='https://img.stackshare.io/group.svg' /> Open source packages (30)</h2>
 
-## <img width='24' height='24' src='https://img.stackshare.io/service/1120/lejvzrnlpb308aftn31u.png'/> npm (24)
+## <img width='24' height='24' src='https://img.stackshare.io/service/1120/lejvzrnlpb308aftn31u.png'/> npm (22)
 
 |NAME|VERSION|LAST UPDATED|LAST UPDATED BY|LICENSE|VULNERABILITIES|
 |:------|:------|:------|:------|:------|:------|
@@ -264,15 +296,27 @@ Full tech stack [here](/techstack.md)
 |[npm-run-all](https://www.npmjs.com/npm-run-all)|v4.1.5|07/07/23|Patrick Schönfeld |MIT|N/A|
 |[optimize-css-assets-webpack-plugin](https://www.npmjs.com/optimize-css-assets-webpack-plugin)|v5.0.8|07/07/23|Patrick Schönfeld |MIT|N/A|
 |[postcss-loader](https://www.npmjs.com/postcss-loader)|v2.1.6|07/07/23|Patrick Schönfeld |MIT|N/A|
-|[sass](https://www.npmjs.com/sass)|v1.51.0|07/07/23|Patrick Schönfeld |MIT|N/A|
 |[sass-loader](https://www.npmjs.com/sass-loader)|v10.2.1|07/07/23|Patrick Schönfeld |MIT|N/A|
-|[select2](https://www.npmjs.com/select2)|v4.0.13|07/07/23|Patrick Schönfeld |MIT|N/A|
 |[slick-carousel](https://www.npmjs.com/slick-carousel)|v1.8.1|07/07/23|Patrick Schönfeld |MIT|N/A|
 |[terser-webpack-plugin](https://www.npmjs.com/terser-webpack-plugin)|v4.2.3|07/07/23|Patrick Schönfeld |MIT|N/A|
 |[typescript-eslint-parser](https://www.npmjs.com/typescript-eslint-parser)|v22.0.0|07/07/23|Patrick Schönfeld |BSD-2-Clause|N/A|
 |[webpack-merge](https://www.npmjs.com/webpack-merge)|v4.2.2|07/07/23|Patrick Schönfeld |MIT|N/A|
 
+
+## <img width='24' height='24' src='https://img.stackshare.io/package_manager/1778/default_90cb8b66e85ae5b95928b10bb076ab6a27c7e151.png'/> Packagist (8)
+
+|NAME|VERSION|LAST UPDATED|LAST UPDATED BY|LICENSE|VULNERABILITIES|
+|:------|:------|:------|:------|:------|:------|
+|[codeception/codeception](https://packagist.org/codeception/codeception)|v5.0.5|07/07/23|Patrick Schönfeld |N/A|N/A|
+|[filp/whoops](https://packagist.org/filp/whoops)|v2.14.6|07/07/23|Patrick Schönfeld |N/A|N/A|
+|[phpstan/phpstan](https://packagist.org/phpstan/phpstan)|v1.9.2|07/07/23|Patrick Schönfeld |N/A|N/A|
+|[phpunit/phpunit](https://packagist.org/phpunit/phpunit)|v9.5.26|07/07/23|Patrick Schönfeld |N/A|N/A|
+|[spryker/code-sniffer](https://packagist.org/spryker/code-sniffer)|v0.17.18|07/07/23|Patrick Schönfeld |N/A|N/A|
+|[spryker/testify](https://packagist.org/spryker/testify)|v3.47.1|07/07/23|Patrick Schönfeld |N/A|N/A|
+|[stecman/symfony-console-completion](https://packagist.org/stecman/symfony-console-completion)|v0.11.0|07/07/23|Patrick Schönfeld |N/A|N/A|
+|[symfony/web-profiler-bundle](https://packagist.org/symfony/web-profiler-bundle)|v5.4.14|07/07/23|Patrick Schönfeld |N/A|N/A|
+
 <br/>
 <div align='center'>
 
-Generated via [Stack File](https://github.com/apps/stack-file)
+Generated via [Stack File](https://github.com/marketplace/stack-file)
